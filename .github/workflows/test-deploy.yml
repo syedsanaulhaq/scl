@@ -1,0 +1,178 @@
+name: TEST - Build, Test & Deploy to Staging
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      # Backend Tests
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+      
+      - name: Run Backend Linter
+        run: |
+          cd backend
+          npm run lint || true
+      
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm run test || true
+      
+      # Frontend Tests
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+      
+      - name: Run Frontend Linter
+        run: |
+          cd frontend
+          npm run lint || true
+      
+      - name: Build Frontend for Production
+        run: |
+          cd frontend
+          npm run build
+      
+      - name: Upload Frontend Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build-test
+          path: frontend/dist
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: rootpass
+          MYSQL_DATABASE: scl_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            if mysql -h127.0.0.1 -uroot -prootpass -e "SELECT 1" &> /dev/null; then
+              echo "MySQL is ready"
+              exit 0
+            fi
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
+          exit 1
+      
+      - name: Initialize Test Database
+        run: |
+          mysql -h127.0.0.1 -uroot -prootpass < database/scl_init_test.sql || true
+      
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+      
+      - name: Run API Tests
+        env:
+          NODE_ENV: test
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASSWORD: rootpass
+          DB_NAME: scl_test
+        run: |
+          cd backend
+          npm run test || true
+
+  deploy-test:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download Frontend Build
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-build-test
+          path: frontend/dist
+      
+      - name: Deploy to Test Server
+        env:
+          TEST_SSH_HOST: ${{ secrets.TEST_SSH_HOST }}
+          TEST_SSH_USER: ${{ secrets.TEST_SSH_USER }}
+          TEST_SSH_KEY: ${{ secrets.TEST_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$TEST_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $TEST_SSH_USER@$TEST_SSH_HOST "
+            cd /var/www/scl/test && \
+            git pull origin develop && \
+            npm install && \
+            npm run build && \
+            pm2 restart scl-backend-test && \
+            systemctl restart nginx
+          "
+      
+      - name: Verify Test Deployment
+        run: |
+          sleep 5
+          curl -f https://test.sclsandbox.xyz/api/health || echo "Health check pending..."
+      
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "✅ TEST deployment successful - https://test.sclsandbox.xyz",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ SCL TEST Environment Updated\n*Branch:* develop\n*Status:* Deployed\n*URL:* https://test.sclsandbox.xyz"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

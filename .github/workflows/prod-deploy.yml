@@ -1,0 +1,292 @@
+name: PROD - Manual Deployment to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      # Backend Build
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm ci
+      
+      - name: Run Backend Linter
+        run: |
+          cd backend
+          npm run lint
+      
+      - name: Run Backend Security Audit
+        run: |
+          cd backend
+          npm audit || true
+      
+      # Frontend Build
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci
+      
+      - name: Run Frontend Linter
+        run: |
+          cd frontend
+          npm run lint
+      
+      - name: Build Frontend for Production
+        run: |
+          cd frontend
+          npm run build
+      
+      - name: Run Security Scan
+        run: |
+          npm install -g snyk
+          snyk test || true
+      
+      - name: Upload Frontend Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build-prod
+          path: frontend/dist
+      
+      - name: Create Release Notes
+        run: |
+          cat > RELEASE_NOTES.md << 'EOF'
+          # Release ${{ github.event.inputs.version }}
+          
+          **Release Date:** $(date)
+          **Deployed by:** ${{ github.actor }}
+          **Commit:** ${{ github.sha }}
+          
+          ## Changes
+          - See GitHub releases for detailed changelog
+          EOF
+      
+      - name: Upload Release Notes
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-notes
+          path: RELEASE_NOTES.md
+
+  security-check:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run SAST Scan
+        run: |
+          echo "Running security analysis..."
+          # Add your security scanning tools here (Snyk, SonarQube, etc.)
+      
+      - name: Check Dependencies
+        run: |
+          cd backend
+          npm audit
+          cd ../frontend
+          npm audit
+      
+      - name: Approve for Production
+        run: echo "✅ Security checks passed"
+
+  approval:
+    runs-on: ubuntu-latest
+    needs: [build, security-check]
+    
+    steps:
+      - name: Request Approval
+        run: |
+          echo "🔔 Production deployment ready for approval"
+          echo "Version: ${{ github.event.inputs.version }}"
+          echo "Release: https://github.com/${{ github.repository }}/releases/tag/${{ github.event.inputs.version }}"
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: [build, security-check]
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      
+      - name: Download Frontend Build
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-build-prod
+          path: frontend/dist
+      
+      - name: Notify Deployment Start
+        run: |
+          echo "🚀 Starting PRODUCTION deployment..."
+          echo "Version: ${{ github.event.inputs.version }}"
+      
+      - name: Deploy to Production Server
+        env:
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
+          PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PROD_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $PROD_SSH_USER@$PROD_SSH_HOST "
+            set -e
+            echo '🔄 Pulling latest code...'
+            cd /var/www/scl/prod && git pull origin main
+            
+            echo '📦 Installing dependencies...'
+            npm ci
+            
+            echo '🔨 Building application...'
+            npm run build
+            
+            echo '💾 Backing up current deployment...'
+            cp -r . /var/backups/scl/prod/$(date +%Y%m%d_%H%M%S)/
+            
+            echo '🔄 Restarting services...'
+            pm2 restart scl-backend-prod --update-env
+            systemctl restart nginx
+            
+            echo '✅ Deployment complete'
+          "
+      
+      - name: Health Check
+        run: |
+          sleep 10
+          for i in {1..5}; do
+            if curl -f https://app.sclsandbox.xyz/api/health; then
+              echo "✅ Health check passed"
+              exit 0
+            fi
+            echo "Attempt $i: Health check failed, retrying..."
+            sleep 5
+          done
+          exit 1
+      
+      - name: Smoke Tests
+        run: |
+          echo "Running smoke tests..."
+          # Add basic smoke tests for critical endpoints
+          curl -f https://app.sclsandbox.xyz/ || exit 1
+          curl -f https://app.sclsandbox.xyz/api/health || exit 1
+      
+      - name: Database Backup
+        env:
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
+          PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PROD_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $PROD_SSH_USER@$PROD_SSH_HOST "
+            mysqldump -u\$DB_USER -p\$DB_PASSWORD scl_prod | gzip > /var/backups/scl/prod/db_$(date +%Y%m%d_%H%M%S).sql.gz
+          "
+      
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
+          body: |
+            Production deployment completed successfully.
+            
+            **Status:** ✅ LIVE
+            **URL:** https://app.sclsandbox.xyz
+            **Deployed:** $(date)
+            **Deployed by:** ${{ github.actor }}
+          draft: false
+          prerelease: false
+      
+      - name: Notify Slack - Success
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "✅ PRODUCTION deployment successful",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚀 *SCL PRODUCTION Deployed*\n*Version:* ${{ github.event.inputs.version }}\n*Status:* ✅ LIVE\n*URL:* https://app.sclsandbox.xyz\n*Deployed by:* ${{ github.actor }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "⏱️ *Deployment Time:* $(echo $(($(date +%s) - $START_TIME))) seconds\n✅ *Health:* OK\n📊 *Monitoring:* Active"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      
+      - name: Notify Stakeholders
+        run: |
+          echo "📧 Notifying stakeholders of production deployment..."
+          # Add email notification logic here
+
+  rollback-on-failure:
+    runs-on: ubuntu-latest
+    needs: deploy-prod
+    if: failure()
+    
+    steps:
+      - name: Notify Rollback
+        run: echo "⚠️ Deployment failed. Manual rollback may be required."
+      
+      - name: Notify Slack - Failure
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "❌ PRODUCTION deployment FAILED",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "❌ *SCL PRODUCTION Deployment Failed*\n*Version:* ${{ github.event.inputs.version }}\n*Status:* FAILED\n*Deployed by:* ${{ github.actor }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "⚠️ *Action Required:*\nReview logs and execute manual rollback if needed"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

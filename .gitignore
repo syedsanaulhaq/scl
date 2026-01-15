@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+package-lock.json
+yarn.lock
+
+# Testing
+coverage/
+
+# Production
+dist/
+build/
+
+# Misc
+.env
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Uploads & Temporary Files
+uploads/
+tmp/
+temp/
+
+# Database
+*.sql.backup

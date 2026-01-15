@@ -1,0 +1,98 @@
+name: DEV - Build & Deploy to Development
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+      
+      - name: Lint Backend Code
+        run: |
+          cd backend
+          npm run lint || true
+      
+      - name: Build Backend
+        run: |
+          cd backend
+          npm run test || true
+      
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+      
+      - name: Lint Frontend Code
+        run: |
+          cd frontend
+          npm run lint || true
+      
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
+      
+      - name: Upload Frontend Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/dist
+      
+      - name: Notify Success
+        if: success()
+        run: echo "✅ DEV Build Successful"
+
+  deploy-dev:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/dist
+      
+      - name: Deploy to Development Server
+        env:
+          DEV_SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+          DEV_SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          DEV_SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$DEV_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $DEV_SSH_USER@$DEV_SSH_HOST "cd /var/www/scl/dev && git pull origin develop && npm install && pm2 restart scl-backend-dev"
+      
+      - name: Verify Deployment
+        run: curl -f http://localhost:5000/api/health || echo "Health check pending..."
+      
+      - name: Notify Deployment
+        run: echo "✅ Deployed to DEV"

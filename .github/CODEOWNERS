@@ -1,0 +1,44 @@
+# SCL Project Code Owners
+# This file defines who is responsible for different parts of the codebase
+# GitHub will automatically request reviews from these code owners for PRs
+
+# Default owners for everything in the repo
+* @syed-fazli @tech-lead
+
+# Backend code owners
+/backend/ @backend-team @syed-fazli
+/backend/src/config/ @devops-team
+/backend/src/middleware/ @backend-team
+/backend/src/routes/ @backend-team
+/backend/src/controllers/ @backend-team
+/backend/src/models/ @database-team
+
+# Frontend code owners
+/frontend/ @frontend-team @syed-fazli
+/frontend/src/components/ @frontend-team
+/frontend/src/pages/ @frontend-team
+/frontend/src/services/ @frontend-team
+/frontend/src/store/ @frontend-team
+/frontend/src/styles/ @ui-designer
+
+# Documentation
+/docs/ @tech-lead
+/docs/GITHUB_SETUP.md @devops-team
+/docs/ENVIRONMENTS.md @devops-team
+*.md @tech-lead
+
+# Configuration files
+.github/ @devops-team
+.github/workflows/ @devops-team
+docker-compose.yml @devops-team
+Dockerfile @devops-team
+
+# Root configuration
+package.json @tech-lead @devops-team
+.gitignore @tech-lead
+README.md @tech-lead
+
+# Database
+database/ @database-team
+sql/ @database-team
+migrations/ @database-team

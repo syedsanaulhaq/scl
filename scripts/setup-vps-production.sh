@@ -94,14 +94,15 @@ if [ ! -d "/home/scl-app/scl" ]; then
 else
     cd scl
     git fetch origin
-    git checkout main
-    git pull origin main
-    echo -e "${GREEN}✓ Repository already exists, updated to main${NC}"
+    git pull
+    echo -e "${GREEN}✓ Repository already exists, updated${NC}"
 fi
 echo ""
 
 echo -e "${YELLOW}STEP 9: Install Dependencies${NC}"
-npm install --workspaces
+cd /home/scl-app/scl
+cd backend && npm install && cd ..
+cd frontend && npm install && cd ..
 echo -e "${GREEN}✓ Dependencies installed${NC}"
 echo ""
 

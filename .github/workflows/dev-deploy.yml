@@ -1,4 +1,5 @@
 name: DEV - Build & Deploy to Development
+# Note: DEV_SSH_HOST, DEV_SSH_USER, DEV_SSH_KEY secrets must be added to GitHub repository settings
 
 on:
   push:

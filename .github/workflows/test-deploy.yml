@@ -1,4 +1,5 @@
 name: TEST - Build, Test & Deploy to Staging
+# Note: TEST_SSH_HOST, TEST_SSH_USER, TEST_SSH_KEY, SLACK_WEBHOOK_URL secrets must be added to GitHub repository settings
 
 on:
   push:

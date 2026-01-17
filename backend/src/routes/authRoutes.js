@@ -1,62 +1,53 @@
 import express from 'express';
-import { authenticate } from '../middleware/auth.js';
+import {
+  register,
+  login,
+  refreshToken,
+  logout,
+  getProfile,
+  updateProfile,
+} from '../controllers/authController.js';
+import { verifyToken, verifyRole } from '../middleware/authMiddleware.js';
 import { validate, validationSchemas } from '../middleware/validation.js';
 
 const router = express.Router();
 
 /**
- * Auth Routes Placeholder
- * Full implementation will be added in Phase 1
+ * Public Auth Routes
  */
 
-// @route   POST /api/v1/auth/login
-// @desc    Login user and return tokens
-// @access  Public
-router.post('/login', validate(validationSchemas.login), (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: 'Login endpoint - coming soon',
-  });
-});
-
-// @route   POST /api/v1/auth/register
+// @route   POST /api/auth/register
 // @desc    Register new user
 // @access  Public
-router.post('/register', validate(validationSchemas.register), (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: 'Register endpoint - coming soon',
-  });
-});
+router.post('/register', validate(validationSchemas.register), register);
 
-// @route   POST /api/v1/auth/refresh
+// @route   POST /api/auth/login
+// @desc    Login user and return tokens
+// @access  Public
+router.post('/login', validate(validationSchemas.login), login);
+
+// @route   POST /api/auth/refresh
 // @desc    Refresh access token using refresh token
 // @access  Public
-router.post('/refresh', validate(validationSchemas.refreshToken), (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: 'Refresh token endpoint - coming soon',
-  });
-});
+router.post('/refresh', refreshToken);
 
-// @route   POST /api/v1/auth/logout
-// @desc    Logout user
-// @access  Private
-router.post('/logout', authenticate, (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: 'Logout endpoint - coming soon',
-  });
-});
+/**
+ * Protected Auth Routes
+ */
 
-// @route   GET /api/v1/auth/me
+// @route   GET /api/auth/profile
 // @desc    Get current user profile
 // @access  Private
-router.get('/me', authenticate, (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: 'Get profile endpoint - coming soon',
-  });
-});
+router.get('/profile', verifyToken, getProfile);
+
+// @route   PATCH /api/auth/profile
+// @desc    Update current user profile
+// @access  Private
+router.patch('/profile', verifyToken, updateProfile);
+
+// @route   POST /api/auth/logout
+// @desc    Logout user
+// @access  Private
+router.post('/logout', verifyToken, logout);
 
 export default router;

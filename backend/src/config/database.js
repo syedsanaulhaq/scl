@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
+import UserModel from '../models/User.js';
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
 
@@ -24,6 +25,14 @@ const sequelize = new Sequelize(
     },
   }
 );
+
+// Initialize Models
+const User = UserModel(sequelize);
+
+// Export models
+export const models = {
+  User,
+};
 
 export const testConnection = async () => {
   try {

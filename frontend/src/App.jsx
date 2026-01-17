@@ -8,6 +8,7 @@ import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import DashboardPage from '@/pages/DashboardPage';
+import CoursesPage from '@/pages/CoursesPage';
 
 // Purple Theme Configuration
 const theme = createTheme({
@@ -132,6 +133,16 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Courses Routes - Protected */}
+          <Route 
+            path="/courses" 
+            element={
+              <ProtectedRoute>
+                <CoursesPage />
               </ProtectedRoute>
             } 
           />

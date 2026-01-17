@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, BookOpen, AlertCircle, Eye, DollarSign, ShoppingCart, Activity } from 'lucide-react';
-import { authService } from '../services/authService';
+import * as authService from '../services/authService';
+import '../styles/dashboard.css';
 
 // Sample data for charts
 const revenueData = [
@@ -33,18 +34,44 @@ const COLORS = ['#3B82F6', '#10B981'];
 
 const StatCard = ({ title, value, change, trend, icon: Icon, color }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-600 text-sm font-medium">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
-          <p className={`text-sm mt-2 ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
-            {trend === 'up' ? '↑' : '↓'} {change}
-          </p>
-        </div>
-        <div className={`p-3 rounded-lg ${color}`}>
-          <Icon className="w-6 h-6 text-white" />
-        </div>
+    <div className="stat-card">
+      <div className="stat-card-content">
+        <p className="stat-card-label">{title}</p>
+        <p className="stat-card-value">{value}</p>
+        <p className={`stat-card-change ${trend === 'up' ? 'up' : 'down'}`}>
+          {trend === 'up' ? '↑' : '↓'} {change}
+        </p>
+      </div>
+      <div className={`stat-card-icon ${color}`}>
+        <Icon className="w-6 h-6" />
+      </div>
+    </div>
+  );
+};
+
+const ProgressBar = ({ label, percentage, color }) => {
+  return (
+    <div className="progress-item">
+      <div className="progress-label">
+        <span className="progress-label-text">{label}</span>
+        <span className="progress-label-value">{percentage}</span>
+      </div>
+      <div className="progress-bar">
+        <div className={`progress-fill ${color}`} style={{ width: percentage }}></div>
+      </div>
+    </div>
+  );
+};
+
+const RegionItem = ({ label, percentage, color }) => {
+  return (
+    <div className="region-item">
+      <span className="region-label">{label}</span>
+      <div className="region-value">
+        <div className={`region-dot`} style={{
+          backgroundColor: color === 'blue' ? '#3b82f6' : color === 'green' ? '#10b981' : color === 'purple' ? '#a855f7' : '#f97316'
+        }}></div>
+        <span className="region-percentage">{percentage}</span>
       </div>
     </div>
   );
@@ -73,35 +100,38 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="dashboard-container">
       {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-center">
+      <div className="dashboard-header">
+        <div className="dashboard-content">
+          <div className="flex-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
               <p className="text-gray-600 mt-2">Welcome back, {user?.name || 'User'}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                Generate Report
-              </button>
-            </div>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              Generate Report
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="dashboard-content">
         {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem',
+          marginBottom: '2rem'
+        }}>
           <StatCard
             title="Total views"
             value={stats.totalViews}
             change="0.43%"
             trend="up"
             icon={Eye}
-            color="bg-blue-600"
+            color="blue"
           />
           <StatCard
             title="Total Profit"
@@ -109,7 +139,7 @@ const DashboardPage = () => {
             change="4.35%"
             trend="up"
             icon={DollarSign}
-            color="bg-green-600"
+            color="green"
           />
           <StatCard
             title="Total Product"
@@ -117,7 +147,7 @@ const DashboardPage = () => {
             change="2.59%"
             trend="up"
             icon={ShoppingCart}
-            color="bg-purple-600"
+            color="purple"
           />
           <StatCard
             title="Total Users"
@@ -125,42 +155,50 @@ const DashboardPage = () => {
             change="0.95%"
             trend="down"
             icon={Users}
-            color="bg-orange-600"
+            color="orange"
           />
         </div>
 
         {/* Metrics Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-gray-600 text-sm">Overdue</p>
-            <p className="text-2xl font-bold text-gray-900">0</p>
+        <div className="summary-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+          gap: '1rem',
+          marginBottom: '2rem'
+        }}>
+          <div className="summary-card">
+            <p className="summary-card-label">Overdue</p>
+            <p className="summary-card-value">0</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-gray-600 text-sm">Reopened</p>
-            <p className="text-2xl font-bold text-red-600">1</p>
+          <div className="summary-card">
+            <p className="summary-card-label">Reopened</p>
+            <p className="summary-card-value red">1</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-gray-600 text-sm">Open Bugs</p>
-            <p className="text-2xl font-bold text-gray-900">0</p>
+          <div className="summary-card">
+            <p className="summary-card-label">Open Bugs</p>
+            <p className="summary-card-value">0</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-gray-600 text-sm">Pull Requests</p>
-            <p className="text-2xl font-bold text-gray-900">0</p>
+          <div className="summary-card">
+            <p className="summary-card-label">Pull Requests</p>
+            <p className="summary-card-value">0</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <p className="text-gray-600 text-sm">Vulnerabilities</p>
-            <p className="text-2xl font-bold text-gray-900">0</p>
+          <div className="summary-card">
+            <p className="summary-card-label">Vulnerabilities</p>
+            <p className="summary-card-value">0</p>
           </div>
         </div>
 
         {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '1.5rem',
+          marginBottom: '2rem'
+        }}>
           {/* Total Revenue Chart */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Total Revenue</h3>
-              <p className="text-gray-600 text-sm">12.04.2022 - 12.05.2022</p>
-            </div>
+          <div className="chart-container" style={{ gridColumn: 'span 2' }}>
+            <h3 className="chart-title">Total Revenue</h3>
+            <p className="chart-subtitle">12.04.2022 - 12.05.2022</p>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={revenueData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -175,8 +213,8 @@ const DashboardPage = () => {
           </div>
 
           {/* Profit This Week */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Profit this week</h3>
+          <div className="chart-container">
+            <h3 className="chart-title">Profit this week</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={profitData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -192,80 +230,36 @@ const DashboardPage = () => {
         </div>
 
         {/* Additional Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="analytics-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '1.5rem'
+        }}>
           {/* Visitors Analytics */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Visitors Analytics</h3>
-              <select className="text-sm text-gray-600 border border-gray-300 rounded px-2 py-1">
+          <div className="analytics-card">
+            <div className="analytics-header">
+              <h3 className="analytics-title">Visitors Analytics</h3>
+              <select className="analytics-select">
                 <option>Monthly</option>
                 <option>Weekly</option>
                 <option>Daily</option>
               </select>
             </div>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-700">Direct</span>
-                  <span className="text-sm font-medium text-gray-700">80%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '80%' }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-700">Organic</span>
-                  <span className="text-sm font-medium text-gray-700">60%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-600 h-2 rounded-full" style={{ width: '60%' }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-700">Paid</span>
-                  <span className="text-sm font-medium text-gray-700">45%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-purple-600 h-2 rounded-full" style={{ width: '45%' }}></div>
-                </div>
-              </div>
+            <div>
+              <ProgressBar label="Direct" percentage={80} color="blue" />
+              <ProgressBar label="Organic" percentage={60} color="green" />
+              <ProgressBar label="Paid" percentage={45} color="purple" />
             </div>
           </div>
 
           {/* Region Labels */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Region Labels</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700">North America</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-600"></div>
-                  <span className="text-sm font-medium text-gray-900">45%</span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700">Europe</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-600"></div>
-                  <span className="text-sm font-medium text-gray-900">30%</span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700">Asia Pacific</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-purple-600"></div>
-                  <span className="text-sm font-medium text-gray-900">20%</span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700">Others</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-600"></div>
-                  <span className="text-sm font-medium text-gray-900">5%</span>
-                </div>
-              </div>
+          <div className="analytics-card">
+            <h3 className="analytics-title">Region Labels</h3>
+            <div style={{ marginTop: '1rem' }}>
+              <RegionItem label="North America" percentage="45%" color="blue" />
+              <RegionItem label="Europe" percentage="30%" color="green" />
+              <RegionItem label="Asia Pacific" percentage="20%" color="purple" />
+              <RegionItem label="Others" percentage="5%" color="orange" />
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
-import sequelize, { testConnection } from './config/database.js';
+import sequelize, { testConnection, models } from './config/database.js';
 import logger from './config/logger.js';
 import { corsMiddleware } from './middleware/cors.js';
 import errorHandler from './middleware/errorHandler.js';
@@ -12,6 +12,10 @@ import routes from './routes/index.js';
 dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
 
 const app = express();
+
+// ==================== App Configuration ====================
+// Store models in app.locals for controller access
+app.locals.models = models;
 
 // ==================== Middleware ====================
 

@@ -4,10 +4,11 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import useAuthStore from '@/store/authStore';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AppLayout from '@/components/AppLayout';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
-import DashboardPage from '@/pages/DashboardPage';
+import Dashboard from '@/pages/Dashboard';
 import CoursesPage from '@/pages/CoursesPage';
 
 // Purple Theme Configuration
@@ -127,12 +128,14 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* Dashboard Routes - Protected */}
+          {/* App Layout Routes - Protected with Sidebar */}
           <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <AppLayout>
+                  <Dashboard />
+                </AppLayout>
               </ProtectedRoute>
             } 
           />
@@ -142,7 +145,9 @@ function App() {
             path="/courses" 
             element={
               <ProtectedRoute>
-                <CoursesPage />
+                <AppLayout>
+                  <CoursesPage />
+                </AppLayout>
               </ProtectedRoute>
             } 
           />

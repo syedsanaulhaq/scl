@@ -89,8 +89,8 @@ const CoursesPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-center">
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '2rem 1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Course Management</h1>
               <p className="text-gray-600 mt-2">{courses.length} courses</p>
@@ -107,7 +107,7 @@ const CoursesPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div style={{ maxWidth: '100%', margin: '0 auto', padding: '2rem 1rem' }}>
         {/* Add/Edit Course Form */}
         {showForm && (
           <div className="bg-white rounded-lg shadow mb-8 p-6">

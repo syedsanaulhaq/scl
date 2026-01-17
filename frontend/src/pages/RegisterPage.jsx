@@ -15,7 +15,6 @@ import {
   MenuItem,
 } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
-import Layout from '@/components/Layout';
 import { useAuthStore } from '@/store/authStore';
 import * as authService from '@/services/authService';
 
@@ -70,7 +69,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <Layout>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#f8fafc' }}>
       <Container maxWidth="sm">
         <Box sx={{ py: 4 }}>
           <Card>
@@ -175,7 +174,7 @@ const RegisterPage = () => {
           </Card>
         </Box>
       </Container>
-    </Layout>
+    </Box>
   );
 };
 

@@ -117,13 +117,14 @@ const DashboardPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="dashboard-content">
+      <div style={{ maxWidth: '100%' }}>
         {/* Key Metrics */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: '1.5rem',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          padding: '0 1rem'
         }}>
           <StatCard
             title="Total views"
@@ -164,7 +165,8 @@ const DashboardPage = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
           gap: '1rem',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          padding: '0 1rem'
         }}>
           <div className="summary-card">
             <p className="summary-card-label">Overdue</p>
@@ -193,7 +195,8 @@ const DashboardPage = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           gap: '1.5rem',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          padding: '0 1rem'
         }}>
           {/* Total Revenue Chart */}
           <div className="chart-container" style={{ gridColumn: 'span 2' }}>
@@ -233,7 +236,8 @@ const DashboardPage = () => {
         <div className="analytics-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '1.5rem'
+          gap: '1.5rem',
+          padding: '0 1rem'
         }}>
           {/* Visitors Analytics */}
           <div className="analytics-card">

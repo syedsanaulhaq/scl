@@ -11,7 +11,6 @@ import {
   Container,
 } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
-import Layout from '@/components/Layout';
 import { useAuthStore } from '@/store/authStore';
 import * as authService from '@/services/authService';
 
@@ -44,7 +43,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Layout>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#f8fafc' }}>
       <Container maxWidth="sm">
         <Box sx={{ py: 8 }}>
           <Card>
@@ -53,7 +52,7 @@ const LoginPage = () => {
                 variant="h4"
                 sx={{ mb: 3, fontWeight: 'bold', textAlign: 'center', color: '#6B46C1' }}
               >
-                SCL Login
+                KIAALAP Login
               </Typography>
 
               {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -111,7 +110,7 @@ const LoginPage = () => {
           </Card>
         </Box>
       </Container>
-    </Layout>
+    </Box>
   );
 };
 

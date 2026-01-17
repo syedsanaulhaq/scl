@@ -2,14 +2,15 @@ import express from 'express';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+
+// Load environment variables FIRST before importing anything that needs env vars
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
+
 import sequelize, { testConnection, models } from './config/database.js';
 import logger from './config/logger.js';
 import { corsMiddleware } from './middleware/cors.js';
 import errorHandler from './middleware/errorHandler.js';
 import routes from './routes/index.js';
-
-// Load environment variables
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
 
 const app = express();
 

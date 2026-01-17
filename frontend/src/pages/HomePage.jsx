@@ -1,9 +1,18 @@
 import React from 'react';
 import { Box, Container, Typography, Button, Card, CardContent, Grid } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import useAuthStore from '@/store/authStore';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
   const modules = [
     {
       id: 1,

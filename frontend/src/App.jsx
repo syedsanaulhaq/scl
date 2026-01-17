@@ -7,6 +7,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
+import DashboardPage from '@/pages/DashboardPage';
 
 // Purple Theme Configuration
 const theme = createTheme({
@@ -126,7 +127,14 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Dashboard Routes - Protected */}
-          {/* Coming soon in Phase 1 */}
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            } 
+          />
 
           {/* Catch all - 404 */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -12,9 +12,12 @@ import {
 } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import { useAuthStore } from '@/store/authStore';
+import * as authService from '@/services/authService';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -30,12 +33,11 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      // API call will be implemented in Phase 1
-      console.log('Login attempt:', formData);
-      // Placeholder - remove after implementing actual login
-      setError('Login endpoint not yet implemented');
+      const { user, tokens } = await authService.login(formData.email, formData.password);
+      setAuth(user, tokens.accessToken, tokens.refreshToken);
+      navigate('/');
     } catch (err) {
-      setError(err.message || 'Login failed');
+      setError(err.response?.data?.message || err.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }

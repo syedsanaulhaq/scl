@@ -16,16 +16,18 @@ import {
 } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import { useAuthStore } from '@/store/authStore';
+import * as authService from '@/services/authService';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    instituteId: '',
+    role: 'student',
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -44,15 +46,24 @@ const RegisterPage = () => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // API call will be implemented in Phase 1
-      console.log('Register attempt:', formData);
-      // Placeholder - remove after implementing actual registration
-      setError('Register endpoint not yet implemented');
+      const { user, tokens } = await authService.register(
+        formData.email,
+        formData.password,
+        formData.name,
+        formData.role
+      );
+      setAuth(user, tokens.accessToken, tokens.refreshToken);
+      navigate('/');
     } catch (err) {
-      setError(err.message || 'Registration failed');
+      setError(err.response?.data?.message || err.message || 'Registration failed');
     } finally {
       setIsLoading(false);
     }
@@ -76,20 +87,9 @@ const RegisterPage = () => {
               <form onSubmit={handleSubmit}>
                 <TextField
                   fullWidth
-                  label="First Name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  margin="normal"
-                  required
-                  disabled={isLoading}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  name="lastName"
-                  value={formData.lastName}
+                  label="Full Name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   margin="normal"
                   required
@@ -117,6 +117,7 @@ const RegisterPage = () => {
                   onChange={handleChange}
                   margin="normal"
                   required
+                  helperText="Minimum 6 characters"
                   disabled={isLoading}
                 />
 
@@ -133,14 +134,16 @@ const RegisterPage = () => {
                 />
 
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Institute</InputLabel>
+                  <InputLabel>Role</InputLabel>
                   <Select
-                    name="instituteId"
-                    value={formData.instituteId}
+                    name="role"
+                    value={formData.role}
                     onChange={handleChange}
                     disabled={isLoading}
                   >
-                    <MenuItem value={1}>Test University</MenuItem>
+                    <MenuItem value="student">Student</MenuItem>
+                    <MenuItem value="teacher">Teacher</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
                   </Select>
                 </FormControl>
 

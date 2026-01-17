@@ -50,18 +50,16 @@ export default function (sequelize) {
       isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        field: 'isActive',
       },
       lastLogin: {
         type: DataTypes.DATE,
         allowNull: true,
-        field: 'lastLogin',
       },
     },
     {
       timestamps: true,
       tableName: 'users',
-      underscored: false,
+      underscored: true,
       indexes: [
         {
           fields: ['email'],

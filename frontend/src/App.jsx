@@ -97,11 +97,11 @@ const theme = createTheme({
 });
 
 function App() {
-  const { checkAuth, isLoading } = useAuthStore();
+  const { restoreAuth, isLoading } = useAuthStore();
 
   useEffect(() => {
-    checkAuth();
-  }, []);
+    restoreAuth();
+  }, [restoreAuth]);
 
   if (isLoading) {
     return (

@@ -1,0 +1,39 @@
+Summary,Issue Type,Priority,Assignee,Status,Description,Epic Link,Component,Labels
+Phase 1 - Boilerplate & Infrastructure,Epic,High,,Done,"Complete backend and frontend boilerplate with security setup",,Core,phase-1
+Phase 2 - User Authentication,Epic,High,,Done,"User registration, login, JWT tokens, and RBAC implementation",,Core,phase-2
+Phase 3 - Course Management,Epic,High,,To Do,"Course CRUD, enrollment, scheduling, and catalog management",,Core,phase-3
+Phase 4 - Assessment & Grading,Epic,Medium,,To Do,"Assignment management, quizzes, grading, and feedback system",,Core,phase-4
+Phase 5 - Reports & Analytics,Epic,Medium,,To Do,"Student progress reports, performance analytics, and dashboards",,Core,phase-5
+Phase 6 - Integration & Launch,Epic,Low,,To Do,"Moodle integration, performance optimization, and go-live",,Core,phase-6
+Setup Express.js Backend,Story,High,,Done,"Create Express.js server with middleware pipeline, error handling, and logging. 16 files created.",Phase 1 - Boilerplate & Infrastructure,Backend,backend
+Setup React.js Frontend,Story,High,,Done,"Create React application with routing, state management, and UI components. 20 files created.",Phase 1 - Boilerplate & Infrastructure,Frontend,frontend
+Configure MySQL Database,Story,High,,Done,"Setup Sequelize ORM, connection pooling, and database migrations.",Phase 1 - Boilerplate & Infrastructure,Database,database
+Implement JWT Authentication,Story,High,,Done,"Create JWT token generation, verification, and refresh mechanisms.",Phase 2 - User Authentication,Backend,api
+Implement User Registration,Story,High,,Done,"Create POST /api/v1/auth/register endpoint with validation and password hashing.",Phase 2 - User Authentication,Backend,api
+Implement User Login,Story,High,,Done,"Create POST /api/v1/auth/login endpoint with credential verification.",Phase 2 - User Authentication,Backend,api
+Implement Get Profile,Story,High,,Done,"Create GET /api/v1/auth/profile protected endpoint.",Phase 2 - User Authentication,Backend,api
+Implement Update Profile,Story,High,,Done,"Create PATCH /api/v1/auth/profile protected endpoint.",Phase 2 - User Authentication,Backend,api
+Implement Token Refresh,Story,High,,Done,"Create POST /api/v1/auth/refresh endpoint for token renewal.",Phase 2 - User Authentication,Backend,api
+Implement Logout,Story,High,,Done,"Create POST /api/v1/auth/logout endpoint with session cleanup.",Phase 2 - User Authentication,Backend,api
+Create Registration Form,Story,High,,Done,"Build React registration page with form validation and API integration.",Phase 2 - User Authentication,Frontend,ui
+Create Login Form,Story,High,,Done,"Build React login page with form validation and token storage.",Phase 2 - User Authentication,Frontend,ui
+Create Protected Routes,Story,High,,Done,"Implement route protection with JWT token verification.",Phase 2 - User Authentication,Frontend,ui
+Setup Production Deployment,Task,High,,Done,"Deploy backend to PM2, frontend to Nginx, configure SSL certificates.",Phase 2 - User Authentication,DevOps,deployment
+Fix JWT Configuration,Bug,Critical,,Done,"Updated placeholder JWT secrets in production environment.",Phase 2 - User Authentication,DevOps,bug
+Fix IPv6 Connection Error,Bug,Critical,,Done,"Changed DB_HOST from localhost to 127.0.0.1 for consistent IPv4 connection.",Phase 2 - User Authentication,Database,bug
+Fix Database Schema Mismatch,Bug,High,,Done,"Recreated production users table with snake_case columns matching local schema.",Phase 2 - User Authentication,Database,bug
+Fix Frontend Build Deployment,Bug,High,,Done,"Built and deployed React production build to /frontend/dist.",Phase 2 - User Authentication,Frontend,bug
+Create Course CRUD API,Story,High,,To Do,"Implement POST/GET/PATCH/DELETE endpoints for course management.",Phase 3 - Course Management,Backend,api
+Create Course Database Schema,Story,High,,To Do,"Design and create courses table with proper relationships.",Phase 3 - Course Management,Database,database
+Implement Student Enrollment,Story,High,,To Do,"Create enrollment system with validation and conflict checking.",Phase 3 - Course Management,Backend,api
+Create Course Pages,Story,High,,To Do,"Build React pages for course listing, details, and management.",Phase 3 - Course Management,Frontend,ui
+Implement Course Search,Story,Medium,,To Do,"Add search and filtering functionality for course catalog.",Phase 3 - Course Management,Backend,api
+Create Assignment Endpoints,Story,High,,To Do,"Implement assignment CRUD operations and submissions.",Phase 4 - Assessment & Grading,Backend,api
+Create Grading System,Story,High,,To Do,"Implement grade calculation and reporting functionality.",Phase 4 - Assessment & Grading,Backend,api
+Build Grading Dashboard,Story,High,,To Do,"Create React dashboard for instructors to manage grades.",Phase 4 - Assessment & Grading,Frontend,ui
+Create Analytics Endpoints,Story,Medium,,To Do,"Build endpoints for student performance data and statistics.",Phase 5 - Reports & Analytics,Backend,api
+Create Reports Dashboard,Story,Medium,,To Do,"Build React dashboard for viewing student progress reports.",Phase 5 - Reports & Analytics,Frontend,ui
+Integrate Moodle LMS,Story,Medium,,To Do,"Implement Moodle API integration for course synchronization.",Phase 6 - Integration & Launch,Backend,api
+Performance Testing,Task,Medium,,To Do,"Conduct load testing and optimize bottlenecks.",Phase 6 - Integration & Launch,QA,testing
+Security Audit,Task,High,,To Do,"Perform comprehensive security review before launch.",Phase 6 - Integration & Launch,QA,security
+User Training,Task,Medium,,To Do,"Create and deliver user training materials and documentation.",Phase 6 - Integration & Launch,Documentation,training

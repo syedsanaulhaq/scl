@@ -8,6 +8,8 @@
     "dev:backend": "echo 'Backend started with Docker Compose'",
     "dev:frontend": "cd frontend && npm run dev",
     "development:stop": "docker-compose down",
+    "production:start": "ssh root@185.211.6.60 \"pm2 restart all\"",
+    "production:stop": "ssh root@185.211.6.60 \"pm2 stop all\"",
     "build:backend": "docker-compose build --no-cache backend",
     "build:frontend": "cd frontend && npm run build",
     "test": "powershell -ExecutionPolicy Bypass -File scripts/test-integration-simple.ps1"

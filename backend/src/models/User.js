@@ -58,7 +58,6 @@ export default function (sequelize) {
     },
     {
       timestamps: true,
-      underscored: true,
       tableName: 'users',
       indexes: [
         {
@@ -67,9 +66,6 @@ export default function (sequelize) {
         },
         {
           fields: ['role'],
-        },
-        {
-          fields: ['is_active', 'role'],
         },
       ],
     }

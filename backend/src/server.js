@@ -19,6 +19,9 @@ app.locals.models = models;
 
 // ==================== Middleware ====================
 
+// Trust Proxy (for Nginx reverse proxy with X-Forwarded-For header)
+app.set('trust proxy', 1);
+
 // Security Middleware
 app.use(helmet());
 

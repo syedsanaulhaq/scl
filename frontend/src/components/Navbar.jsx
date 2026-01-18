@@ -5,7 +5,7 @@ import useAuthStore from '@/store/authStore';
 import { Button } from '@/components/ui/button';
 
 const Navbar = ({ onToggleSidebar }) => {
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated, clearAuth } = useAuthStore();
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center gap-4 bg-background/95 backdrop-blur px-6 border-b shadow-sm">

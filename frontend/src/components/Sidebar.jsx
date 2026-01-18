@@ -20,11 +20,11 @@ import { Button } from '@/components/ui/button';
 const Sidebar = ({ isOpen, onToggle, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuthStore();
+  const { clearAuth } = useAuthStore();
   const [expandedMenu, setExpandedMenu] = useState(null);
 
   const handleLogout = () => {
-    logout();
+    clearAuth();
     navigate('/login');
   };
 
@@ -179,7 +179,7 @@ const Sidebar = ({ isOpen, onToggle, onClose }) => {
         {/* Header */}
         <div className="flex h-16 items-center border-b px-6">
           <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-            <span>KIAALAP</span>
+            <span>SCL Institute</span>
           </Link>
           <button
             onClick={onClose}

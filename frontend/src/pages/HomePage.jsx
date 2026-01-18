@@ -71,7 +71,7 @@ const HomePage = () => {
         }}
       >
         <Typography variant="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
-          KIAALAP
+          SCL Institute
         </Typography>
         <Typography variant="h5" sx={{ mb: 4 }}>
           Education Institute Management System

@@ -2,18 +2,26 @@ import express from 'express';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
-import sequelize, { testConnection } from './config/database.js';
+
+// Load environment variables FIRST before importing anything that needs env vars
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
+
+import sequelize, { testConnection, models } from './config/database.js';
 import logger from './config/logger.js';
 import { corsMiddleware } from './middleware/cors.js';
 import errorHandler from './middleware/errorHandler.js';
 import routes from './routes/index.js';
 
-// Load environment variables
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
-
 const app = express();
 
+// ==================== App Configuration ====================
+// Store models in app.locals for controller access
+app.locals.models = models;
+
 // ==================== Middleware ====================
+
+// Trust Proxy (for Nginx reverse proxy with X-Forwarded-For header)
+app.set('trust proxy', 1);
 
 // Security Middleware
 app.use(helmet());
@@ -30,6 +38,7 @@ const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10) * 60 * 1000,
   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10),
   message: 'Too many requests from this IP, please try again later.',
+  skip: (req) => !req.ip, // Skip validation if no IP
 });
 app.use('/api/', limiter);
 

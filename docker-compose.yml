@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: scl-mysql-dev
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: scl_dev
+      MYSQL_USER: scl_dev
+      MYSQL_PASSWORD: scl_dev_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - scl-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # phpMyAdmin Service for Database Management
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: scl-phpmyadmin-dev
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - scl-network
+    restart: unless-stopped
+
+  # Node.js Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scl-backend-dev
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: scl_dev
+      DB_PASSWORD: scl_dev_password
+      DB_NAME: scl_dev
+      DB_DIALECT: mysql
+      DB_POOL_MAX: 10
+      DB_POOL_MIN: 2
+      JWT_SECRET: dev-secret-key-12345-change-in-production
+      JWT_REFRESH_SECRET: dev-refresh-secret-key-12345-change-in-production
+      JWT_EXPIRY: 15m
+      JWT_REFRESH_EXPIRY: 7d
+      FRONTEND_URL: http://localhost:3173
+    ports:
+      - "5000:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/package.json:/app/package.json
+      - ./backend/package-lock.json:/app/package-lock.json
+    networks:
+      - scl-network
+    restart: unless-stopped
+    command: npm run dev
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  scl-network:
+    driver: bridge

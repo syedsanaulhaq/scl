@@ -1,0 +1,710 @@
+{
+  "issues": [
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Phase 1 - Boilerplate & Infrastructure",
+        "description": "Complete backend and frontend boilerplate with security setup",
+        "issuetype": {
+          "name": "Epic"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "phase-1",
+          "boilerplate",
+          "infrastructure"
+        ],
+        "components": [
+          {
+            "name": "Core"
+          }
+        ]
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Phase 2 - User Authentication",
+        "description": "User registration, login, JWT tokens, and RBAC implementation. All endpoints live in production.",
+        "issuetype": {
+          "name": "Epic"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "phase-2",
+          "authentication",
+          "live"
+        ],
+        "components": [
+          {
+            "name": "Core"
+          }
+        ]
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Phase 3 - Course Management",
+        "description": "Course CRUD, enrollment, scheduling, and catalog management",
+        "issuetype": {
+          "name": "Epic"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "labels": [
+          "phase-3",
+          "courses"
+        ],
+        "components": [
+          {
+            "name": "Core"
+          }
+        ]
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Setup Express.js Backend",
+        "description": "Create Express.js server with middleware pipeline, error handling, and logging.\n\nCompleted:\n- 16 files created\n- Middleware: auth, validation, cors, errorHandler\n- Security: Helmet, rate limiting, JWT\n- Logging: Winston with file rotation",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "backend",
+          "phase-1"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-1"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Setup React.js Frontend",
+        "description": "Create React application with routing, state management, and UI components.\n\nCompleted:\n- 20 files created\n- Routing: React Router v6 with protected routes\n- State: Zustand store management\n- UI: Material-UI, Tailwind CSS with purple theme",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "frontend",
+          "phase-1"
+        ],
+        "components": [
+          {
+            "name": "Frontend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-1"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement JWT Authentication",
+        "description": "Create JWT token generation, verification, and refresh mechanisms.\n\nImplemented:\n- Access tokens: 15 minute expiry\n- Refresh tokens: 7 day expiry\n- Token refresh endpoint\n- JWT middleware for protected routes",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement User Registration API",
+        "description": "Create POST /api/v1/auth/register endpoint with validation and password hashing.\n\nImplemented:\n- Email validation and uniqueness check\n- Password hashing with bcryptjs (10 rounds)\n- User role assignment (student/teacher/admin)\n- Returns user object and JWT tokens\n- Status: 201 Created",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement User Login API",
+        "description": "Create POST /api/v1/auth/login endpoint with credential verification.\n\nImplemented:\n- Email and password validation\n- User lookup and password comparison\n- LastLogin timestamp update\n- Returns user object and JWT tokens\n- Status: 200 OK",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement Get Profile API (Protected)",
+        "description": "Create GET /api/v1/auth/profile protected endpoint.\n\nImplemented:\n- JWT middleware authentication required\n- Returns current user profile\n- Password field excluded from response\n- Status: 200 OK",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "protected",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement Update Profile API (Protected)",
+        "description": "Create PATCH /api/v1/auth/profile protected endpoint.\n\nImplemented:\n- JWT middleware authentication required\n- Update name and/or email\n- Email uniqueness validation\n- Returns updated user object\n- Status: 200 OK",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "protected",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement Token Refresh API",
+        "description": "Create POST /api/v1/auth/refresh endpoint for token renewal.\n\nImplemented:\n- Accepts refresh token\n- Generates new access token\n- Refresh token remains valid\n- Returns new access token\n- Status: 200 OK",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "tokens",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement Logout API (Protected)",
+        "description": "Create POST /api/v1/auth/logout endpoint with session cleanup.\n\nImplemented:\n- JWT middleware authentication required\n- Clears user session\n- Returns success message\n- Status: 200 OK",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "api",
+          "authentication",
+          "protected",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Create Registration Form UI",
+        "description": "Build React registration page with form validation and API integration.\n\nCompleted:\n- Form fields: email, password, name, role\n- Client-side validation\n- API integration with authService\n- Error handling and display\n- Success redirect to login",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "ui",
+          "authentication",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Frontend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Create Login Form UI",
+        "description": "Build React login page with form validation and token storage.\n\nCompleted:\n- Form fields: email, password\n- Client-side validation\n- API integration with authService\n- JWT token storage in localStorage\n- Redirect to dashboard on success",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "ui",
+          "authentication",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Frontend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Setup Production Deployment",
+        "description": "Deploy backend to PM2, frontend to Nginx, configure SSL certificates.\n\nCompleted:\n- Backend: PM2 cluster mode (4 processes)\n- Frontend: Nginx static file serving\n- Database: MySQL 8.0 scl_prod\n- SSL: Let's Encrypt with auto-renewal\n- Domain: https://sclsandbox.xyz\n- Server: 185.211.6.60",
+        "issuetype": {
+          "name": "Task"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "deployment",
+          "devops",
+          "phase-2",
+          "production"
+        ],
+        "components": [
+          {
+            "name": "DevOps"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Fix JWT Configuration Error",
+        "description": "Updated placeholder JWT secrets in production environment.\n\nIssue: JWT_SECRET was set to placeholder value 'your_jwt_secret_key...'\nSolution: Updated .env.production with actual secret keys\nTime to Fix: 15 minutes\nSeverity: CRITICAL\nStatus: RESOLVED",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "priority": {
+          "name": "Critical"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "bug",
+          "critical",
+          "security",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "DevOps"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Fix IPv6 Connection Refused Error",
+        "description": "Changed DB_HOST from localhost to 127.0.0.1 for consistent IPv4 connection.\n\nIssue: MySQL connection refused on ::1:3306 (IPv6 loopback)\nRoot Cause: 'localhost' resolving to IPv6 instead of IPv4\nSolution: Used explicit IPv4 address 127.0.0.1\nTime to Fix: 20 minutes\nSeverity: CRITICAL\nStatus: RESOLVED",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "priority": {
+          "name": "Critical"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "bug",
+          "critical",
+          "database",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Database"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Fix Database Schema Mismatch",
+        "description": "Recreated production users table with snake_case columns matching local schema.\n\nIssue: 'Unknown column is_active in field list'\nRoot Cause: Production table had camelCase (isActive), local had snake_case (is_active)\nSolution: Recreated table with snake_case columns\nTime to Fix: 30 minutes\nSeverity: HIGH\nStatus: RESOLVED",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "bug",
+          "database",
+          "schema",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Database"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Fix Frontend Build Not Deployed",
+        "description": "Built and deployed React production build to /frontend/dist.\n\nIssue: Frontend returned 500 error\nRoot Cause: Production /frontend/dist directory was empty\nSolution: Built frontend with 'npm run build' and deployed via SCP\nTime to Fix: 25 minutes\nSeverity: HIGH\nStatus: RESOLVED",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "Done"
+        },
+        "labels": [
+          "bug",
+          "frontend",
+          "deployment",
+          "phase-2"
+        ],
+        "components": [
+          {
+            "name": "Frontend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-2"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Phase 3 - Course Management",
+        "description": "Course CRUD, enrollment, scheduling, and catalog management",
+        "issuetype": {
+          "name": "Epic"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "labels": [
+          "phase-3",
+          "courses"
+        ],
+        "components": [
+          {
+            "name": "Core"
+          }
+        ]
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Create Course CRUD API",
+        "description": "Implement POST/GET/PATCH/DELETE endpoints for course management.\n\nEndpoints to create:\n- POST /api/v1/courses - Create course\n- GET /api/v1/courses - List courses\n- GET /api/v1/courses/:id - Get course details\n- PATCH /api/v1/courses/:id - Update course\n- DELETE /api/v1/courses/:id - Delete course",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "labels": [
+          "api",
+          "courses",
+          "phase-3"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-21"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Create Course Database Schema",
+        "description": "Design and create courses table with proper relationships.\n\nFields to include:\n- id (UUID)\n- title (varchar)\n- description (text)\n- instructorId (FK)\n- prerequisites (JSON)\n- capacity (int)\n- startDate (datetime)\n- endDate (datetime)\n- isActive (boolean)\n- created_at, updated_at",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "labels": [
+          "database",
+          "schema",
+          "phase-3"
+        ],
+        "components": [
+          {
+            "name": "Database"
+          }
+        ],
+        "parent": {
+          "key": "SCL-21"
+        }
+      }
+    },
+    {
+      "fields": {
+        "project": {
+          "key": "SCL"
+        },
+        "summary": "Implement Student Enrollment",
+        "description": "Create enrollment system with validation and conflict checking.\n\nFeatures:\n- POST /api/v1/enrollments - Create enrollment\n- GET /api/v1/students/:id/enrollments - Get student enrollments\n- DELETE /api/v1/enrollments/:id - Withdraw from course\n- Validate course capacity\n- Check prerequisites\n- Prevent duplicate enrollments",
+        "issuetype": {
+          "name": "Story"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "labels": [
+          "api",
+          "enrollment",
+          "phase-3"
+        ],
+        "components": [
+          {
+            "name": "Backend"
+          }
+        ],
+        "parent": {
+          "key": "SCL-21"
+        }
+      }
+    }
+  ]
+}

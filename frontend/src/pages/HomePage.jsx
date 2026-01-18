@@ -1,9 +1,17 @@
 import React from 'react';
 import { Box, Container, Typography, Button, Card, CardContent, Grid } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import Layout from '@/components/Layout';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import useAuthStore from '@/store/authStore';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
   const modules = [
     {
       id: 1,
@@ -50,7 +58,7 @@ const HomePage = () => {
   ];
 
   return (
-    <Layout>
+    <Box sx={{ minHeight: '100vh' }}>
       {/* Hero Section */}
       <Box
         sx={{
@@ -63,7 +71,7 @@ const HomePage = () => {
         }}
       >
         <Typography variant="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
-          SCL
+          SCL Institute
         </Typography>
         <Typography variant="h5" sx={{ mb: 4 }}>
           Education Institute Management System
@@ -156,7 +164,7 @@ const HomePage = () => {
           </Grid>
         </Grid>
       </Box>
-    </Layout>
+    </Box>
   );
 };
 

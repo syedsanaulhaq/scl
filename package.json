@@ -1,0 +1,29 @@
+{
+  "name": "scl-platform",
+  "version": "2.0.0",
+  "description": "Supply Chain Learning Platform - Full Stack Application",
+  "private": true,
+  "scripts": {
+    "development:start": "concurrently \"docker-compose up -d && npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "echo 'Backend started with Docker Compose'",
+    "dev:frontend": "cd frontend && npm run dev",
+    "development:stop": "docker-compose down",
+    "production:start": "ssh root@185.211.6.60 \"pm2 restart all\"",
+    "production:stop": "ssh root@185.211.6.60 \"pm2 stop all\"",
+    "build:backend": "docker-compose build --no-cache backend",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "powershell -ExecutionPolicy Bypass -File scripts/test-integration-simple.ps1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "supply-chain",
+    "learning",
+    "education",
+    "platform"
+  ]
+}

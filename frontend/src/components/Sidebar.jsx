@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, LogOut, ChevronDown } from 'lucide-react';
 import useAuthStore from '../store/authStore';
-import '../styles/sidebar.css';
 
 const Sidebar = ({ isOpen, onToggle, onClose }) => {
   const navigate = useNavigate();

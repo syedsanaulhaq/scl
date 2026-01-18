@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, BookOpen, AlertCircle, Eye, DollarSign, ShoppingCart, Activity } from 'lucide-react';
 import * as authService from '../services/authService';
-import '../styles/dashboard.css';
 
 // Sample data for charts
 const revenueData = [

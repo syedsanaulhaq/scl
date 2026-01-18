@@ -7,6 +7,7 @@ import Joi from 'joi';
 export const validate = (schema) => {
   return (req, res, next) => {
     // Build validation data based on schema keys
+    // Build validation data based on schema keys
     const validationData = {};
 
     // Only include body, query, params if they're required by the schema

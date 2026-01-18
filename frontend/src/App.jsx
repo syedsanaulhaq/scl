@@ -8,12 +8,18 @@ import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import Dashboard from '@/pages/Dashboard';
 import CoursesPage from '@/pages/CoursesPage';
+<<<<<<< HEAD
+
+function App() {
+  const { restoreAuth, isLoading } = useAuthStore();
+=======
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import StudentDashboard from '@/pages/student/StudentDashboard';
 import UserList from '@/pages/admin/users/UserList';
 
 function App() {
   const { user, restoreAuth, isLoading } = useAuthStore();
+>>>>>>> main
 
   useEffect(() => {
     restoreAuth();
@@ -40,6 +46,38 @@ function App() {
 
   return (
     <Router>
+<<<<<<< HEAD
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Dashboard />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Courses Routes - Protected */}
+          <Route 
+            path="/courses" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <CoursesPage />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Catch all - 404 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+=======
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -84,6 +122,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
+>>>>>>> main
   );
 }
 

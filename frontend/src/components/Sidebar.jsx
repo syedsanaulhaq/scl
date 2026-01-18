@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 const Sidebar = ({ isOpen, onToggle, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { clearAuth } = useAuthStore();
+  const { user, clearAuth } = useAuthStore();
   const [expandedMenu, setExpandedMenu] = useState(null);
 
   const handleLogout = () => {
@@ -35,64 +35,42 @@ const Sidebar = ({ isOpen, onToggle, onClose }) => {
   const menuItems = [
     {
       icon: LayoutDashboard,
-      label: 'Education',
-      submenu: [
-        { label: 'Dashboard v.1', href: '/' }, // Changed to root
-        { label: 'Dashboard v.2', href: '/dashboard-v2' },
-        { label: 'Dashboard v.3', href: '/dashboard-v3' },
-      ]
+      label: 'Back to Dashboard',
+      href: '/'
     },
-    {
-      icon: BarChart,
-      label: 'Analytics',
-      href: '/analytics'
-    },
-    {
-      icon: Settings,
-      label: 'Widgets',
-      href: '/widgets'
-    },
-    {
-      icon: Calendar,
-      label: 'Event',
-      href: '/events'
-    },
-    {
-      icon: Users,
-      label: 'Professors',
-      href: '/professors',
-      submenu: [
-        { label: 'All Professors', href: '/professors' },
-        { label: 'Add Professor', href: '/professors/add' },
-      ]
-    },
-    {
-      icon: GraduationCap,
-      label: 'Students',
-      href: '/students',
-      submenu: [
-        { label: 'All Students', href: '/students' },
-        { label: 'Add Student', href: '/students/add' },
-      ]
-    },
+    // Admin Only Items
+    ...(user?.role === 'admin' ? [
+      {
+        icon: Users,
+        label: 'User Management',
+        href: '/admin/users',
+      },
+      {
+        icon: GraduationCap,
+        label: 'Students',
+        href: '/students',
+        submenu: [
+          { label: 'All Students', href: '/students' },
+          { label: 'Add Student', href: '/students/add' },
+        ]
+      },
+      {
+        icon: Users,
+        label: 'Professors',
+        href: '/professors',
+        submenu: [
+          { label: 'All Professors', href: '/professors' },
+          { label: 'Add Professor', href: '/professors/add' },
+        ]
+      }
+    ] : []),
+
+    // Common Items (Example)
     {
       icon: BookOpen,
       label: 'Courses',
       href: '/courses',
-      submenu: [
-        { label: 'All Courses', href: '/courses' },
-        { label: 'Add Course', href: '/courses/add' },
-      ]
-    },
-    {
-      icon: Library,
-      label: 'Library',
-      href: '/library',
-      submenu: [
-        { label: 'Library Assets', href: '/library' },
-        { label: 'Add Assets', href: '/library/add' },
-      ]
-    },
+    }
   ];
 
   const SidebarItem = ({ item }) => {

@@ -8,7 +8,7 @@ export const validate = (schema) => {
   return (req, res, next) => {
     // Build validation data based on schema keys
     const validationData = {};
-    
+
     // Only include body, query, params if they're required by the schema
     if (schema.describe().keys.body) {
       validationData.body = req.body;
@@ -104,4 +104,26 @@ export const validationSchemas = {
       sort: Joi.string().allow(''),
     }),
   }),
+
+  createUser: Joi.object({
+    body: Joi.object({
+      name: Joi.string().min(2).max(100).required(),
+      email: Joi.string().email().lowercase().required(),
+      password: Joi.string().min(6).required(),
+      role: Joi.string().valid('student', 'teacher', 'admin', 'faculty').default('student'),
+      instituteId: Joi.number().integer(),
+    }),
+  }),
+
+  updateUser: Joi.object({
+    body: Joi.object({
+      name: Joi.string().min(2).max(100),
+      role: Joi.string().valid('student', 'teacher', 'admin', 'faculty'),
+      status: Joi.string().valid('active', 'inactive', 'suspended'),
+      instituteId: Joi.number().integer(),
+    }),
+  }),
 };
+
+export const validateUserCreation = validate(validationSchemas.createUser);
+export const validateUserUpdate = validate(validationSchemas.updateUser);

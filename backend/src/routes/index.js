@@ -1,6 +1,7 @@
 import express from 'express';
 import authRoutes from './authRoutes.js';
 import courseRoutes from './courseRoutes.js';
+import userRoutes from './userRoutes.js'; // Added import for userRoutes
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.get('/health', (req, res) => {
 // API Routes
 router.use('/v1/auth', authRoutes);
 router.use('/v1/courses', courseRoutes);
+router.use('/v1/users', userRoutes); // Registered user routes
 
 // Catch all undefined routes
 router.use('*', (req, res) => {

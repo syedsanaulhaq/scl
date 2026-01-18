@@ -1,11 +1,11 @@
 import express from 'express';
 import * as courseController from '../controllers/CourseController.js';
-import authMiddleware from '../middleware/auth.js';
+import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Apply authentication middleware to all routes
-router.use(authMiddleware);
+router.use(authenticate);
 
 // Course CRUD operations
 router.get('/', courseController.getAllCourses);

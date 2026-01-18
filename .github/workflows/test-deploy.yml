@@ -140,6 +140,11 @@ jobs:
           TEST_SSH_USER: ${{ secrets.TEST_SSH_USER }}
           TEST_SSH_KEY: ${{ secrets.TEST_SSH_KEY }}
         run: |
+          if [ -z "$TEST_SSH_HOST" ] || [ -z "$TEST_SSH_USER" ] || [ -z "$TEST_SSH_KEY" ]; then
+            echo "⚠️ Warning: Missing TEST SSH secrets - skipping deployment"
+            echo "Configure TEST_SSH_HOST, TEST_SSH_USER, TEST_SSH_KEY in GitHub Secrets"
+            exit 0
+          fi
           mkdir -p ~/.ssh
           echo "$TEST_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
@@ -158,6 +163,7 @@ jobs:
           curl -f https://test.sclsandbox.xyz/api/health || echo "Health check pending..."
       
       - name: Notify Slack
+        if: success()
         uses: slackapi/slack-github-action@v1
         with:
           payload: |
@@ -176,3 +182,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        continue-on-error: true

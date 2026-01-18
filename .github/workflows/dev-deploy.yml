@@ -86,6 +86,11 @@ jobs:
           DEV_SSH_USER: ${{ secrets.DEV_SSH_USER }}
           DEV_SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
         run: |
+          if [ -z "$DEV_SSH_HOST" ] || [ -z "$DEV_SSH_USER" ] || [ -z "$DEV_SSH_KEY" ]; then
+            echo "⚠️ Warning: Missing DEV SSH secrets - skipping deployment"
+            echo "Configure PROD_SSH_HOST, DEV_SSH_USER, DEV_SSH_KEY in GitHub Secrets"
+            exit 0
+          fi
           mkdir -p ~/.ssh
           echo "$DEV_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa

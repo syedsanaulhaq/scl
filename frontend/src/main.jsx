@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import './styles/hope-ui-theme.css'
+import './styles/sidebar-hope-ui.css'
+import './styles/dashboard.css'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

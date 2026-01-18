@@ -9,7 +9,7 @@ const Navbar = ({ onToggleSidebar }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#0052CC', boxShadow: 'none', borderRadius: 0, margin: 0, padding: 0 }}>
+    <AppBar position="static" sx={{ backgroundColor: '#3a57e8', boxShadow: '0 2px 8px rgba(58, 87, 232, 0.15)', borderRadius: 0, margin: 0, padding: 0 }}>
       <Toolbar sx={{ minHeight: '60px', padding: 0, margin: 0 }}>
         {isMobile && (
           <IconButton

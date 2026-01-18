@@ -1,0 +1,584 @@
+/* Hope UI Design System - CSS Custom Properties */
+
+:root {
+  /* Colors - Grayscale */
+  --hope-white: #ffffff;
+  --hope-gray-100: #f8f9fa;
+  --hope-gray-200: #e9ecef;
+  --hope-gray-300: #dee2e6;
+  --hope-gray-400: #ced4da;
+  --hope-gray-500: #adb5bd;
+  --hope-gray-600: #6c757d;
+  --hope-gray-700: #495057;
+  --hope-gray-800: #343a40;
+  --hope-gray-900: #212529;
+  --hope-black: #000000;
+
+  /* Colors - Theme */
+  --hope-primary: #3a57e8;
+  --hope-secondary: #001f4d;
+  --hope-success: #1aa053;
+  --hope-info: #079aa2;
+  --hope-warning: #f16a1b;
+  --hope-danger: #c03221;
+  --hope-light: #dee2e6;
+  --hope-dark: #212529;
+
+  /* Brand Colors */
+  --hope-blue: #3a57e8;
+  --hope-indigo: #6610f2;
+  --hope-purple: #6f42c1;
+  --hope-pink: #d63384;
+  --hope-red: #c03221;
+  --hope-orange: #faa938;
+  --hope-yellow: #f16a1b;
+  --hope-green: #1aa053;
+  --hope-teal: #001f4d;
+  --hope-cyan: #079aa2;
+
+  /* Shadow Color */
+  --hope-shadow-color: #8898aa;
+
+  /* Semantic Colors */
+  --hope-text-primary: #212529;
+  --hope-text-secondary: #6c757d;
+  --hope-text-muted: #adb5bd;
+  --hope-bg-primary: #ffffff;
+  --hope-bg-secondary: #f8f9fa;
+  --hope-bg-tertiary: #e9ecef;
+
+  /* Spacing */
+  --hope-spacing-xs: 0.25rem;
+  --hope-spacing-sm: 0.5rem;
+  --hope-spacing-md: 1rem;
+  --hope-spacing-lg: 1.5rem;
+  --hope-spacing-xl: 2rem;
+  --hope-spacing-2xl: 3rem;
+
+  /* Border Radius */
+  --hope-radius-sm: 0.25rem;
+  --hope-radius-md: 0.375rem;
+  --hope-radius-lg: 0.5rem;
+  --hope-radius-xl: 0.75rem;
+  --hope-radius-2xl: 1rem;
+
+  /* Typography */
+  --hope-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --hope-font-size-xs: 0.75rem;
+  --hope-font-size-sm: 0.875rem;
+  --hope-font-size-base: 1rem;
+  --hope-font-size-lg: 1.125rem;
+  --hope-font-size-xl: 1.25rem;
+  --hope-font-size-2xl: 1.5rem;
+  --hope-font-size-3xl: 1.875rem;
+  --hope-font-size-4xl: 2.25rem;
+
+  --hope-font-weight-light: 300;
+  --hope-font-weight-normal: 400;
+  --hope-font-weight-medium: 500;
+  --hope-font-weight-semibold: 600;
+  --hope-font-weight-bold: 700;
+
+  /* Line Heights */
+  --hope-line-height-tight: 1.2;
+  --hope-line-height-normal: 1.5;
+  --hope-line-height-relaxed: 1.75;
+  --hope-line-height-loose: 2;
+
+  /* Shadows */
+  --hope-shadow-xs: 0 1px 2px 0 rgba(136, 152, 170, 0.1);
+  --hope-shadow-sm: 0 1px 3px 0 rgba(136, 152, 170, 0.1),
+    0 1px 2px 0 rgba(136, 152, 170, 0.06);
+  --hope-shadow-md: 0 4px 6px -1px rgba(136, 152, 170, 0.1),
+    0 2px 4px -1px rgba(136, 152, 170, 0.06);
+  --hope-shadow-lg: 0 10px 15px -3px rgba(136, 152, 170, 0.1),
+    0 4px 6px -2px rgba(136, 152, 170, 0.05);
+  --hope-shadow-xl: 0 20px 25px -5px rgba(136, 152, 170, 0.1),
+    0 10px 10px -5px rgba(136, 152, 170, 0.04);
+  --hope-shadow-2xl: 0 25px 50px -12px rgba(136, 152, 170, 0.25);
+
+  /* Transitions */
+  --hope-transition-fast: 0.15s ease-in-out;
+  --hope-transition-base: 0.3s ease-in-out;
+  --hope-transition-slow: 0.5s ease-in-out;
+
+  /* Z-index */
+  --hope-z-dropdown: 1000;
+  --hope-z-sticky: 1020;
+  --hope-z-fixed: 1030;
+  --hope-z-modal-backdrop: 1040;
+  --hope-z-modal: 1050;
+  --hope-z-popover: 1060;
+  --hope-z-tooltip: 1070;
+}
+
+/* Dark Mode (Optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --hope-text-primary: #f8f9fa;
+    --hope-text-secondary: #adb5bd;
+    --hope-text-muted: #6c757d;
+    --hope-bg-primary: #212529;
+    --hope-bg-secondary: #343a40;
+    --hope-bg-tertiary: #495057;
+  }
+}
+
+/* Global Resets */
+* {
+  font-family: var(--hope-font-family);
+  color: var(--hope-text-primary);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--hope-bg-secondary);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--hope-font-weight-bold);
+  line-height: var(--hope-line-height-tight);
+  margin: 0;
+  color: var(--hope-text-primary);
+}
+
+h1 {
+  font-size: var(--hope-font-size-4xl);
+}
+
+h2 {
+  font-size: var(--hope-font-size-3xl);
+}
+
+h3 {
+  font-size: var(--hope-font-size-2xl);
+}
+
+h4 {
+  font-size: var(--hope-font-size-xl);
+}
+
+h5 {
+  font-size: var(--hope-font-size-lg);
+}
+
+h6 {
+  font-size: var(--hope-font-size-base);
+}
+
+p {
+  margin: 0;
+  line-height: var(--hope-line-height-normal);
+  font-size: var(--hope-font-size-base);
+  color: var(--hope-text-secondary);
+}
+
+/* Buttons */
+.btn {
+  padding: var(--hope-spacing-sm) var(--hope-spacing-lg);
+  border-radius: var(--hope-radius-lg);
+  border: none;
+  font-weight: var(--hope-font-weight-medium);
+  font-size: var(--hope-font-size-base);
+  cursor: pointer;
+  transition: all var(--hope-transition-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hope-spacing-xs);
+}
+
+.btn-primary {
+  background-color: var(--hope-primary);
+  color: white;
+  box-shadow: 0 4px 15px rgba(58, 87, 232, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: #2d45d6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(58, 87, 232, 0.4);
+}
+
+.btn-secondary {
+  background-color: var(--hope-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #001840;
+}
+
+.btn-success {
+  background-color: var(--hope-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #158a45;
+}
+
+.btn-danger {
+  background-color: var(--hope-danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #a8281a;
+}
+
+.btn-light {
+  background-color: var(--hope-bg-secondary);
+  color: var(--hope-text-primary);
+  border: 1px solid var(--hope-gray-300);
+}
+
+.btn-light:hover {
+  background-color: var(--hope-bg-tertiary);
+  border-color: var(--hope-gray-400);
+}
+
+.btn-sm {
+  padding: var(--hope-spacing-xs) var(--hope-spacing-md);
+  font-size: var(--hope-font-size-sm);
+}
+
+.btn-lg {
+  padding: var(--hope-spacing-md) var(--hope-spacing-xl);
+  font-size: var(--hope-font-size-lg);
+}
+
+/* Cards */
+.card {
+  background-color: var(--hope-bg-primary);
+  border: 1px solid var(--hope-gray-200);
+  border-radius: var(--hope-radius-xl);
+  padding: var(--hope-spacing-lg);
+  box-shadow: var(--hope-shadow-sm);
+  transition: all var(--hope-transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--hope-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  padding: 0 0 var(--hope-spacing-lg) 0;
+  border-bottom: 1px solid var(--hope-gray-200);
+  margin-bottom: var(--hope-spacing-lg);
+}
+
+.card-body {
+  padding: 0;
+}
+
+.card-footer {
+  padding: var(--hope-spacing-lg) 0 0 0;
+  border-top: 1px solid var(--hope-gray-200);
+  margin-top: var(--hope-spacing-lg);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--hope-spacing-xs) var(--hope-spacing-sm);
+  border-radius: var(--hope-radius-md);
+  font-size: var(--hope-font-size-xs);
+  font-weight: var(--hope-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-primary {
+  background-color: rgba(58, 87, 232, 0.15);
+  color: var(--hope-primary);
+}
+
+.badge-success {
+  background-color: rgba(26, 160, 83, 0.15);
+  color: var(--hope-success);
+}
+
+.badge-danger {
+  background-color: rgba(192, 50, 33, 0.15);
+  color: var(--hope-danger);
+}
+
+.badge-warning {
+  background-color: rgba(241, 106, 27, 0.15);
+  color: var(--hope-warning);
+}
+
+.badge-info {
+  background-color: rgba(7, 154, 162, 0.15);
+  color: var(--hope-info);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: var(--hope-spacing-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--hope-spacing-sm);
+  font-weight: var(--hope-font-weight-medium);
+  color: var(--hope-text-primary);
+  font-size: var(--hope-font-size-sm);
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--hope-spacing-sm) var(--hope-spacing-md);
+  border: 1px solid var(--hope-gray-300);
+  border-radius: var(--hope-radius-lg);
+  font-size: var(--hope-font-size-base);
+  color: var(--hope-text-primary);
+  background-color: var(--hope-bg-primary);
+  transition: all var(--hope-transition-base);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--hope-primary);
+  box-shadow: 0 0 0 3px rgba(58, 87, 232, 0.1);
+}
+
+.form-control:disabled {
+  background-color: var(--hope-bg-secondary);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  background-color: var(--hope-bg-secondary);
+  color: var(--hope-text-primary);
+  font-weight: var(--hope-font-weight-semibold);
+  padding: var(--hope-spacing-md);
+  border-bottom: 1px solid var(--hope-gray-200);
+  text-align: left;
+}
+
+.table tbody td {
+  padding: var(--hope-spacing-md);
+  border-bottom: 1px solid var(--hope-gray-200);
+  color: var(--hope-text-secondary);
+}
+
+.table tbody tr:hover {
+  background-color: var(--hope-bg-secondary);
+}
+
+/* Alerts */
+.alert {
+  padding: var(--hope-spacing-md) var(--hope-spacing-lg);
+  border-radius: var(--hope-radius-lg);
+  margin-bottom: var(--hope-spacing-lg);
+  border-left: 4px solid;
+}
+
+.alert-primary {
+  background-color: rgba(58, 87, 232, 0.1);
+  border-left-color: var(--hope-primary);
+  color: var(--hope-primary);
+}
+
+.alert-success {
+  background-color: rgba(26, 160, 83, 0.1);
+  border-left-color: var(--hope-success);
+  color: var(--hope-success);
+}
+
+.alert-danger {
+  background-color: rgba(192, 50, 33, 0.1);
+  border-left-color: var(--hope-danger);
+  color: var(--hope-danger);
+}
+
+.alert-warning {
+  background-color: rgba(241, 106, 27, 0.1);
+  border-left-color: var(--hope-warning);
+  color: var(--hope-warning);
+}
+
+.alert-info {
+  background-color: rgba(7, 154, 162, 0.1);
+  border-left-color: var(--hope-info);
+  color: var(--hope-info);
+}
+
+/* Progress Bars */
+.progress {
+  height: 0.5rem;
+  background-color: var(--hope-bg-tertiary);
+  border-radius: var(--hope-radius-md);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--hope-primary);
+  transition: width var(--hope-transition-base);
+}
+
+/* Utilities */
+.text-primary {
+  color: var(--hope-primary);
+}
+
+.text-secondary {
+  color: var(--hope-text-secondary);
+}
+
+.text-muted {
+  color: var(--hope-text-muted);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.bg-primary {
+  background-color: var(--hope-primary);
+}
+
+.bg-secondary {
+  background-color: var(--hope-bg-secondary);
+}
+
+.bg-light {
+  background-color: var(--hope-bg-secondary);
+}
+
+.bg-dark {
+  background-color: var(--hope-dark);
+}
+
+.rounded {
+  border-radius: var(--hope-radius-lg);
+}
+
+.rounded-sm {
+  border-radius: var(--hope-radius-sm);
+}
+
+.rounded-lg {
+  border-radius: var(--hope-radius-2xl);
+}
+
+.shadow {
+  box-shadow: var(--hope-shadow-md);
+}
+
+.shadow-sm {
+  box-shadow: var(--hope-shadow-sm);
+}
+
+.shadow-lg {
+  box-shadow: var(--hope-shadow-lg);
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.p-sm {
+  padding: var(--hope-spacing-sm);
+}
+
+.p-md {
+  padding: var(--hope-spacing-md);
+}
+
+.p-lg {
+  padding: var(--hope-spacing-lg);
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.gap-sm {
+  gap: var(--hope-spacing-sm);
+}
+
+.gap-md {
+  gap: var(--hope-spacing-md);
+}
+
+.gap-lg {
+  gap: var(--hope-spacing-lg);
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}

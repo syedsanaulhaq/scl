@@ -20,7 +20,11 @@ import { Button } from '@/components/ui/button';
 const Sidebar = ({ isOpen, onToggle, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
+<<<<<<< HEAD
   const { clearAuth } = useAuthStore();
+=======
+  const { user, clearAuth } = useAuthStore();
+>>>>>>> main
   const [expandedMenu, setExpandedMenu] = useState(null);
 
   const handleLogout = () => {
@@ -35,6 +39,7 @@ const Sidebar = ({ isOpen, onToggle, onClose }) => {
   const menuItems = [
     {
       icon: LayoutDashboard,
+<<<<<<< HEAD
       label: 'Education',
       submenu: [
         { label: 'Dashboard v.1', href: '/' }, // Changed to root
@@ -75,10 +80,44 @@ const Sidebar = ({ isOpen, onToggle, onClose }) => {
         { label: 'Add Student', href: '/students/add' },
       ]
     },
+=======
+      label: 'Back to Dashboard',
+      href: '/'
+    },
+    // Admin Only Items
+    ...(user?.role === 'admin' ? [
+      {
+        icon: Users,
+        label: 'User Management',
+        href: '/admin/users',
+      },
+      {
+        icon: GraduationCap,
+        label: 'Students',
+        href: '/students',
+        submenu: [
+          { label: 'All Students', href: '/students' },
+          { label: 'Add Student', href: '/students/add' },
+        ]
+      },
+      {
+        icon: Users,
+        label: 'Professors',
+        href: '/professors',
+        submenu: [
+          { label: 'All Professors', href: '/professors' },
+          { label: 'Add Professor', href: '/professors/add' },
+        ]
+      }
+    ] : []),
+
+    // Common Items (Example)
+>>>>>>> main
     {
       icon: BookOpen,
       label: 'Courses',
       href: '/courses',
+<<<<<<< HEAD
       submenu: [
         { label: 'All Courses', href: '/courses' },
         { label: 'Add Course', href: '/courses/add' },
@@ -93,6 +132,9 @@ const Sidebar = ({ isOpen, onToggle, onClose }) => {
         { label: 'Add Assets', href: '/library/add' },
       ]
     },
+=======
+    }
+>>>>>>> main
   ];
 
   const SidebarItem = ({ item }) => {

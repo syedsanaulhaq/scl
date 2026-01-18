@@ -32,13 +32,10 @@ function App() {
   return (
     <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
-          {/* App Layout Routes - Protected with Sidebar */}
           <Route 
-            path="/dashboard" 
+            path="/" 
             element={
               <ProtectedRoute>
                 <AppLayout>

@@ -4,9 +4,28 @@ import {
   DollarSign,
   ShoppingCart,
   Users,
-  BarChart3,
-  PieChart,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  CreditCard,
+  Download
 } from 'lucide-react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+} from 'recharts';
+
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState('Monthly');
@@ -15,226 +34,266 @@ const Dashboard = () => {
     {
       id: 1,
       label: 'Total Views',
-      value: '$3,456k',
-      change: '0.43%',
+      value: '345.6k',
+      change: '+0.43%',
       trend: 'up',
       icon: Eye,
-      iconColor: 'blue',
+      description: 'Since last month'
     },
     {
       id: 2,
-      label: 'Total Profit',
-      value: '$45.2k',
-      change: '4.35%',
+      label: 'Total Revenue',
+      value: '$45,231.89',
+      change: '+20.1%',
       trend: 'up',
       icon: DollarSign,
-      iconColor: 'green',
+      description: 'Since last month'
     },
     {
       id: 3,
-      label: 'Total Product',
-      value: '2450',
-      change: '2.59%',
+      label: 'New Courses',
+      value: '+573',
+      change: '+201',
       trend: 'up',
       icon: ShoppingCart,
-      iconColor: 'purple',
+      description: 'Since last month'
     },
     {
       id: 4,
-      label: 'Total Users',
-      value: '3456',
-      change: '0.95%',
+      label: 'Active Users',
+      value: '2,350',
+      change: '-5% from last week',
       trend: 'down',
       icon: Users,
-      iconColor: 'orange',
+      description: 'Since last hour'
     },
   ];
 
-  const summaryData = [
-    { label: 'Overdue', value: '0' },
-    { label: 'Reopened', value: '1', isRed: true },
-    { label: 'Open Bugs', value: '0' },
-    { label: 'Pull Requests', value: '0' },
-    { label: 'Vulnerabilities', value: '0' },
+  const revenueData = [
+    { name: 'Jan', total: 1500 },
+    { name: 'Feb', total: 2300 },
+    { name: 'Mar', total: 3200 },
+    { name: 'Apr', total: 4500 },
+    { name: 'May', total: 3800 },
+    { name: 'Jun', total: 5100 },
+    { name: 'Jul', total: 4800 },
+    { name: 'Aug', total: 5600 },
+    { name: 'Sep', total: 6200 },
+    { name: 'Oct', total: 7500 },
+    { name: 'Nov', total: 8100 },
+    { name: 'Dec', total: 9200 },
   ];
 
-  const visitorsAnalytics = [
-    { label: 'Direct', value: 80, color: '#3B82F6' },
-    { label: 'Organic', value: 60, color: '#10B981' },
-    { label: 'Paid', value: 45, color: '#A855F7' },
-  ];
-
-  const regionData = [
-    { label: 'North America', percentage: '45%', color: '#3B82F6' },
-    { label: 'Europe', percentage: '30%', color: '#10B981' },
-    { label: 'Asia Pacific', percentage: '20%', color: '#A855F7' },
-    { label: 'Others', percentage: '5%', color: '#F97316' },
+  const recentSales = [
+    {
+      name: "Olivia Martin",
+      email: "olivia.martin@email.com",
+      amount: "+$1,999.00",
+      status: "Success",
+      initials: "OM"
+    },
+    {
+      name: "Jackson Lee",
+      email: "jackson.lee@email.com",
+      amount: "+$39.00",
+      status: "Pending",
+      initials: "JL"
+    },
+    {
+      name: "Isabella Nguyen",
+      email: "isabella.nguyen@email.com",
+      amount: "+$299.00",
+      status: "Success",
+      initials: "IN"
+    },
+    {
+      name: "William Kim",
+      email: "will@email.com",
+      amount: "+$99.00",
+      status: "Success",
+      initials: "WK"
+    },
+    {
+      name: "Sofia Davis",
+      email: "sofia.davis@email.com",
+      amount: "+$39.00",
+      status: "Rejected",
+      initials: "SD"
+    }
   ];
 
   return (
-    <div className="page-wrapper">
-      <div className="container-fluid">
-        {/* Dashboard Header */}
-        <div className="mb-8">
-          <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
-            <div>
-              <h1 className="page-title h3 text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-              <p className="text-gray-600">Welcome back, User</p>
-            </div>
-            <button className="btn-primary">Generate Report</button>
-          </div>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+          <p className="text-muted-foreground">
+            Overview of your institute's performance and analytics.
+          </p>
         </div>
-
-        {/* Stat Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {statCards.map((card) => {
-            const IconComponent = card.icon;
-            return (
-              <div
-                key={card.id}
-                className="card hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="card-body">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <p className="text-gray-600 text-sm font-medium mb-2">{card.label}</p>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{card.value}</h3>
-                      <p
-                        className={`text-sm font-semibold ${
-                          card.trend === 'up' ? 'text-green-600' : 'text-red-600'
-                        }`}
-                      >
-                        {card.trend === 'up' ? '↑' : '↓'} {card.change}
-                      </p>
-                    </div>
-                    <div
-                      className={`w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                        card.iconColor === 'blue'
-                          ? 'bg-blue-100 text-blue-600'
-                          : card.iconColor === 'green'
-                          ? 'bg-green-100 text-green-600'
-                          : card.iconColor === 'purple'
-                          ? 'bg-purple-100 text-purple-600'
-                          : 'bg-orange-100 text-orange-600'
-                      }`}
-                    >
-                      <IconComponent size={24} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="flex items-center space-x-2">
+          <Button>
+            <Download className="mr-2 h-4 w-4" />
+            Download Report
+          </Button>
         </div>
+      </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-          {summaryData.map((item, index) => (
-            <div key={index} className="card text-center">
-              <div className="card-body">
-                <p className="text-xs font-bold uppercase text-gray-500 mb-2">{item.label}</p>
-                <p
-                  className={`text-2xl font-bold ${
-                    item.isRed ? 'text-red-600' : 'text-gray-900'
-                  }`}
-                >
-                  {item.value}
+      {/* Stats Grid */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {statCards.map((card) => {
+          const Icon = card.icon;
+          return (
+            <Card key={card.id}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {card.label}
+                </CardTitle>
+                <Icon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{card.value}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  <span className={card.trend === 'up' ? "text-green-500" : "text-red-500"}>
+                    {card.change}
+                  </span>
+                  {" "}{card.description}
                 </p>
-              </div>
-            </div>
-          ))}
-        </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Revenue Chart */}
-          <div className="lg:col-span-2 card">
-            <div className="card-header">
-              <h3 className="card-title">Total Revenue</h3>
-              <p className="text-sm text-gray-600">12.04.2022 - 12.05.2022</p>
+      {/* Charts Section */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Main Chart */}
+        <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Revenue Overview</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardDescription>
+                Monthly revenue performance for the current year.
+              </CardDescription>
+              <Select defaultValue="monthly" onValueChange={setTimeframe}>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="yearly">Yearly</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div className="card-body">
-              <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center flex-col gap-3">
-                <BarChart3 size={48} className="text-gray-400" />
-                <p className="text-gray-500 font-medium">Line Chart - Revenue vs Sales</p>
-              </div>
-            </div>
-          </div>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart data={revenueData}>
+                <XAxis
+                  dataKey="name"
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `$${value}`}
+                />
+                <Tooltip
+                  cursor={{ fill: 'transparent' }}
+                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                />
+                <Bar
+                  dataKey="total"
+                  fill="hsl(var(--primary))"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-          {/* Profit Chart */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Profit this week</h3>
-            </div>
-            <div className="card-body">
-              <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center flex-col gap-3">
-                <PieChart size={48} className="text-gray-400" />
-                <p className="text-gray-500 font-medium">Bar Chart</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Analytics Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Visitors Analytics */}
-          <div className="card">
-            <div className="card-header">
-              <div className="flex items-center justify-between gap-4 flex-wrap">
-                <h3 className="card-title">Visitors Analytics</h3>
-                <select
-                  className="search-input text-sm"
-                  value={timeframe}
-                  onChange={(e) => setTimeframe(e.target.value)}
-                >
-                  <option>Monthly</option>
-                  <option>Weekly</option>
-                  <option>Daily</option>
-                </select>
-              </div>
-            </div>
-            <div className="card-body space-y-4">
-              {visitorsAnalytics.map((item, index) => (
-                <div key={index}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-gray-700">{item.label}</span>
-                    <span className="text-sm font-bold text-gray-600">{item.value}</span>
+        {/* Recent Activity / Sales */}
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Recent Enrollments</CardTitle>
+            <CardDescription>
+              You made 265 sales this month.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-8">
+              {recentSales.map((sale, index) => (
+                <div key={index} className="flex items-center">
+                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs ring-2 ring-background">
+                    {sale.initials}
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="h-2 rounded-full"
-                      style={{
-                        width: `${item.value}px`,
-                        backgroundColor: item.color,
-                      }}
-                    ></div>
+                  <div className="ml-4 space-y-1">
+                    <p className="text-sm font-medium leading-none">{sale.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {sale.email}
+                    </p>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Region Data */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Region Labels</h3>
-            </div>
-            <div className="card-body space-y-4">
-              {regionData.map((region, index) => (
-                <div key={index} className="flex items-center justify-between pb-4 border-b border-gray-200 last:border-b-0">
-                  <span className="text-sm font-semibold text-gray-700">{region.label}</span>
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: region.color }}
-                    ></div>
-                    <span className="text-sm font-bold text-gray-600">{region.percentage}</span>
+                  <div className="ml-auto font-medium">
+                    {sale.amount}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Row 3 - More Stats */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Course Completion</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">85%</div>
+            <p className="text-xs text-muted-foreground">+2.5% from last month</p>
+            <div className="h-2 w-full bg-secondary mt-3 rounded-full overflow-hidden">
+              <div className="h-full bg-primary w-[85%] rounded-full" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Student Satisfaction</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">4.8/5.0</div>
+            <p className="text-xs text-muted-foreground">+0.2 from last month</p>
+            <div className="mt-4 flex gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <div key={star} className={`h-2 flex-1 rounded-full ${star < 5 ? 'bg-primary' : 'bg-secondary'}`} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">12</div>
+            <p className="text-xs text-muted-foreground">Requires immediate attention</p>
+            <div className="mt-4">
+              <Button variant="outline" size="sm" className="w-full">View All</Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

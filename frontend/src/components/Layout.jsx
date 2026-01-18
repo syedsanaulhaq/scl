@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Box, Container } from '@mui/material';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
@@ -15,39 +14,31 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="flex min-h-screen w-full bg-slate-50 dark:bg-slate-950/20">
       {/* Sidebar */}
-      <Sidebar 
+      <Sidebar
         isOpen={sidebarOpen}
         onToggle={handleToggleSidebar}
         onClose={handleCloseSidebar}
       />
 
-      {/* Main Content */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      {/* Main Content Wrapper - Shifted by sidebar width on desktop */}
+      <div className="flex flex-1 flex-col transition-all duration-300 md:pl-64">
         <Navbar onToggleSidebar={handleToggleSidebar} />
-        
-        <Container maxWidth="lg" sx={{ flex: 1, py: 4 }}>
-          {children}
-        </Container>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto p-6 animate-in fade-in duration-500">
+          <div className="mx-auto max-w-7xl">
+            {children}
+          </div>
+        </main>
 
         {/* Footer */}
-        <Box
-          sx={{
-            backgroundColor: '#f3f4f6',
-            py: 4,
-            mt: 'auto',
-            borderTop: '1px solid #e5e7eb',
-          }}
-        >
-          <Container maxWidth="lg">
-            <Box sx={{ textAlign: 'center', color: '#6b7280' }}>
-              <p>&copy; 2026 SCL - Education Institute Management System. All rights reserved.</p>
-            </Box>
-          </Container>
-        </Box>
-      </Box>
-    </Box>
+        <footer className="border-t bg-white py-4 text-center text-sm text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+          <p>&copy; 2026 SCL - Education Institute Management System. All rights reserved.</p>
+        </footer>
+      </div>
+    </div>
   );
 };
 

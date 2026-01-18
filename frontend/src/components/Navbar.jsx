@@ -1,63 +1,53 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Menu, LogOut } from 'lucide-react';
+import { Menu, LogOut, Bell, User } from 'lucide-react';
 import useAuthStore from '@/store/authStore';
+import { Button } from '@/components/ui/button';
 
 const Navbar = ({ onToggleSidebar }) => {
   const { user, isAuthenticated, logout } = useAuthStore();
 
   return (
-    <nav className="bg-teal-600 shadow-md border-b border-teal-700">
-      <div className="w-full h-16 px-6 py-0 flex items-center justify-between">
-        {/* Left Section - Menu & Logo */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onToggleSidebar}
-            className="md:hidden p-2 hover:bg-teal-700 rounded-lg transition-colors"
-            aria-label="Toggle sidebar"
-          >
-            <Menu size={24} className="text-white" />
-          </button>
-          
-          <RouterLink to="/" className="flex items-center gap-2 text-white hover:text-teal-100 transition-colors">
-            <span className="text-2xl font-bold">KIAALAP</span>
-          </RouterLink>
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center gap-4 bg-background/95 backdrop-blur px-6 border-b shadow-sm">
+      <button
+        onClick={onToggleSidebar}
+        className="md:hidden p-2 hover:bg-accent rounded-md transition-colors text-foreground"
+        aria-label="Toggle sidebar"
+      >
+        <Menu size={24} />
+      </button>
+
+      <div className="flex flex-1 items-center justify-between">
+        {/* Breadcrumb or Title Area - Hidden on mobile if needed */}
+        <div className="flex items-center gap-2">
+          {/* <h2 className="text-lg font-semibold">Dashboard</h2> */}
         </div>
 
-        {/* Right Section - User Actions */}
+        {/* Right Section */}
         <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground">
+            <Bell size={20} />
+            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
+          </Button>
+
           {isAuthenticated ? (
-            <>
-              <span className="text-teal-100 text-sm hidden sm:inline">{user?.email}</span>
-              <button
-                onClick={() => {
-                  logout();
-                }}
-                className="flex items-center gap-2 px-4 py-2 text-white hover:bg-teal-700 rounded-lg transition-colors text-sm font-medium"
-              >
-                <LogOut size={18} />
-                <span className="hidden sm:inline">Logout</span>
-              </button>
-            </>
-          ) : (
-            <div className="flex items-center gap-3">
-              <RouterLink
-                to="/login"
-                className="px-4 py-2 text-white hover:bg-teal-700 rounded-lg transition-colors text-sm font-medium"
-              >
-                Login
-              </RouterLink>
-              <RouterLink
-                to="/register"
-                className="px-4 py-2 bg-teal-500 hover:bg-teal-400 text-white rounded-lg transition-colors text-sm font-medium"
-              >
-                Register
-              </RouterLink>
+            <div className="flex items-center gap-3 pl-3 border-l">
+              <div className="hidden text-right sm:block">
+                <p className="text-sm font-medium leading-none">{user?.name || 'User'}</p>
+                <p className="text-xs text-muted-foreground">{user?.email}</p>
+              </div>
+              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                {user?.name?.[0]?.toUpperCase() || 'U'}
+              </div>
             </div>
+          ) : (
+            <RouterLink to="/login">
+              <Button>Login</Button>
+            </RouterLink>
           )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

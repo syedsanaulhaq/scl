@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Container } from '@mui/material';
-import '../styles/dashboard.css';
 import {
   Eye,
   DollarSign,
   ShoppingCart,
   Users,
-  TrendingUp,
-  TrendingDown,
   BarChart3,
   PieChart,
 } from 'lucide-react';
@@ -18,7 +14,7 @@ const Dashboard = () => {
   const statCards = [
     {
       id: 1,
-      label: 'Total views',
+      label: 'Total Views',
       value: '$3,456k',
       change: '0.43%',
       trend: 'up',
@@ -62,31 +58,6 @@ const Dashboard = () => {
     { label: 'Vulnerabilities', value: '0' },
   ];
 
-  const revenueData = [
-    { month: 'Sep', revenue: 20, sales: 30 },
-    { month: 'Oct', revenue: 25, sales: 15 },
-    { month: 'Nov', revenue: 30, sales: 40 },
-    { month: 'Dec', revenue: 35, sales: 35 },
-    { month: 'Jan', revenue: 30, sales: 45 },
-    { month: 'Feb', revenue: 40, sales: 25 },
-    { month: 'Mar', revenue: 35, sales: 30 },
-    { month: 'Apr', revenue: 45, sales: 25 },
-    { month: 'May', revenue: 50, sales: 40 },
-    { month: 'Jun', revenue: 55, sales: 35 },
-    { month: 'Jul', revenue: 60, sales: 50 },
-    { month: 'Aug', revenue: 55, sales: 45 },
-  ];
-
-  const profitData = [
-    { day: 'M', revenue: 60, sales: 40 },
-    { day: 'T', revenue: 45, sales: 50 },
-    { day: 'W', revenue: 70, sales: 35 },
-    { day: 'T', revenue: 55, sales: 45 },
-    { day: 'F', revenue: 80, sales: 60 },
-    { day: 'S', revenue: 50, sales: 40 },
-    { day: 'S', revenue: 65, sales: 45 },
-  ];
-
   const visitorsAnalytics = [
     { label: 'Direct', value: 80, color: '#3B82F6' },
     { label: 'Organic', value: 60, color: '#10B981' },
@@ -101,102 +72,137 @@ const Dashboard = () => {
   ];
 
   return (
-    <main className="app-main">
-      <div className="dashboard-container" style={{ padding: '2rem 1rem' }}>
+    <div className="page-wrapper">
+      <div className="container-fluid">
         {/* Dashboard Header */}
-        <div className="dashboard-header">
-          <div className="dashboard-content">
-            <div className="flex-between">
-              <div>
-                <h1 className="dashboard-title">Dashboard</h1>
-                <p className="dashboard-subtitle">Welcome back, User</p>
-              </div>
-              <button className="btn-generate-report">Generate Report</button>
+        <div className="mb-8">
+          <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
+            <div>
+              <h1 className="page-title h3 text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+              <p className="text-gray-600">Welcome back, User</p>
             </div>
+            <button className="btn-primary">Generate Report</button>
           </div>
         </div>
 
-        {/* Stat Cards */}
-        <div className="stat-cards-grid">
+        {/* Stat Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {statCards.map((card) => {
             const IconComponent = card.icon;
             return (
-              <div key={card.id} className="stat-card">
-                <div className="stat-card-content">
-                  <p className="stat-card-label">{card.label}</p>
-                  <p className="stat-card-value">{card.value}</p>
-                  <p className={`stat-card-change ${card.trend}`}>
-                    {card.trend === 'up' ? '↑' : '↓'} {card.change}
-                  </p>
-                </div>
-                <div className={`stat-card-icon ${card.iconColor}`}>
-                  <IconComponent size={24} />
+              <div
+                key={card.id}
+                className="card hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="card-body">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-gray-600 text-sm font-medium mb-2">{card.label}</p>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{card.value}</h3>
+                      <p
+                        className={`text-sm font-semibold ${
+                          card.trend === 'up' ? 'text-green-600' : 'text-red-600'
+                        }`}
+                      >
+                        {card.trend === 'up' ? '↑' : '↓'} {card.change}
+                      </p>
+                    </div>
+                    <div
+                      className={`w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                        card.iconColor === 'blue'
+                          ? 'bg-blue-100 text-blue-600'
+                          : card.iconColor === 'green'
+                          ? 'bg-green-100 text-green-600'
+                          : card.iconColor === 'purple'
+                          ? 'bg-purple-100 text-purple-600'
+                          : 'bg-orange-100 text-orange-600'
+                      }`}
+                    >
+                      <IconComponent size={24} />
+                    </div>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Summary Grid */}
-        <div className="summary-grid">
+        {/* Summary Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           {summaryData.map((item, index) => (
-            <div key={index} className="summary-card">
-              <p className="summary-card-label">{item.label}</p>
-              <p className={`summary-card-value ${item.isRed ? 'red' : ''}`}>
-                {item.value}
-              </p>
+            <div key={index} className="card text-center">
+              <div className="card-body">
+                <p className="text-xs font-bold uppercase text-gray-500 mb-2">{item.label}</p>
+                <p
+                  className={`text-2xl font-bold ${
+                    item.isRed ? 'text-red-600' : 'text-gray-900'
+                  }`}
+                >
+                  {item.value}
+                </p>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Charts Section */}
-        <div className="charts-grid">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Revenue Chart */}
-          <div className="chart-container revenue-chart">
-            <h3 className="chart-title">Total Revenue</h3>
-            <p className="chart-subtitle">12.04.2022 - 12.05.2022</p>
-            <div className="chart-placeholder">
-              <BarChart3 size={48} />
-              <p>Line Chart - Revenue vs Sales</p>
+          <div className="lg:col-span-2 card">
+            <div className="card-header">
+              <h3 className="card-title">Total Revenue</h3>
+              <p className="text-sm text-gray-600">12.04.2022 - 12.05.2022</p>
+            </div>
+            <div className="card-body">
+              <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center flex-col gap-3">
+                <BarChart3 size={48} className="text-gray-400" />
+                <p className="text-gray-500 font-medium">Line Chart - Revenue vs Sales</p>
+              </div>
             </div>
           </div>
 
           {/* Profit Chart */}
-          <div className="chart-container profit-chart">
-            <h3 className="chart-title">Profit this week</h3>
-            <div className="chart-placeholder">
-              <PieChart size={48} />
-              <p>Bar Chart - Revenue vs Sales</p>
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">Profit this week</h3>
+            </div>
+            <div className="card-body">
+              <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center flex-col gap-3">
+                <PieChart size={48} className="text-gray-400" />
+                <p className="text-gray-500 font-medium">Bar Chart</p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Analytics Section */}
-        <div className="analytics-grid">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Visitors Analytics */}
-          <div className="analytics-card">
-            <div className="analytics-header">
-              <h3 className="analytics-title">Visitors Analytics</h3>
-              <select
-                className="analytics-select"
-                value={timeframe}
-                onChange={(e) => setTimeframe(e.target.value)}
-              >
-                <option>Monthly</option>
-                <option>Weekly</option>
-                <option>Daily</option>
-              </select>
+          <div className="card">
+            <div className="card-header">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h3 className="card-title">Visitors Analytics</h3>
+                <select
+                  className="search-input text-sm"
+                  value={timeframe}
+                  onChange={(e) => setTimeframe(e.target.value)}
+                >
+                  <option>Monthly</option>
+                  <option>Weekly</option>
+                  <option>Daily</option>
+                </select>
+              </div>
             </div>
-            <div className="analytics-content">
+            <div className="card-body space-y-4">
               {visitorsAnalytics.map((item, index) => (
-                <div key={index} className="progress-item">
-                  <div className="progress-label">
-                    <span className="progress-label-text">{item.label}</span>
-                    <span className="progress-label-value">{item.value}</span>
+                <div key={index}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-gray-700">{item.label}</span>
+                    <span className="text-sm font-bold text-gray-600">{item.value}</span>
                   </div>
-                  <div className="progress-bar">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="progress-fill"
+                      className="h-2 rounded-full"
                       style={{
                         width: `${item.value}px`,
                         backgroundColor: item.color,
@@ -208,19 +214,21 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Region Labels */}
-          <div className="analytics-card">
-            <h3 className="analytics-title">Region Labels</h3>
-            <div className="region-section">
+          {/* Region Data */}
+          <div className="card">
+            <div className="card-header">
+              <h3 className="card-title">Region Labels</h3>
+            </div>
+            <div className="card-body space-y-4">
               {regionData.map((region, index) => (
-                <div key={index} className="region-item">
-                  <span className="region-label">{region.label}</span>
-                  <div className="region-value">
+                <div key={index} className="flex items-center justify-between pb-4 border-b border-gray-200 last:border-b-0">
+                  <span className="text-sm font-semibold text-gray-700">{region.label}</span>
+                  <div className="flex items-center gap-2">
                     <div
-                      className="region-dot"
+                      className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: region.color }}
                     ></div>
-                    <span className="region-percentage">{region.percentage}</span>
+                    <span className="text-sm font-bold text-gray-600">{region.percentage}</span>
                   </div>
                 </div>
               ))}
@@ -228,7 +236,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
